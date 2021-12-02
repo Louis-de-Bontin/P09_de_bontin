@@ -4,33 +4,22 @@ from django.views.generic import View
 from django.contrib.auth.mixins import LoginRequiredMixin
 
 
-class ReviewCreateAnswerToSelf(View): # add mixin after
+class Flux(View): # add mixin after
     def get(self, request):
         return render(
             request,
-            'review/review_create_self.html'
+            'flux/flux.html'
         )
 
     def post(self, request):
         pass
 
 
-class ReviewCreateAnswerToSomeone(View): # add mixin after
+class FluxSelf(View): # add mixin after
     def get(self, request):
         return render(
             request,
-            'review/review_create_answer.html'
-        )
-
-    def post(self, request):
-        pass
-
-
-class ReviewModify(View): # add mixin after
-    def get(self, request):
-        return render(
-            request,
-            'review/review_modify.html'
+            'flux/flux_self.html'
         )
 
     def post(self, request):

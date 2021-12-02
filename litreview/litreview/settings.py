@@ -39,7 +39,8 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'authentication',
     'review',
-    'review_ask'
+    'review_ask',
+    'flux'
 ]
 
 MIDDLEWARE = [
