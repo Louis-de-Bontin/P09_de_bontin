@@ -1,0 +1,26 @@
+<article>
+    <div class="entete">
+        <div>
+            <a href="{% url 'flux-book' ticket.author ticket.title %}"><h3 class="title">{{ ticket.title }}</h3></a>
+            <h4 class="author">-{{ ticket.author }}-</h4>
+        </div>
+        <div class="top_right_in_content">
+            {% if not hide_button %}
+                <a href="{% url 'review-create' ticket.id %}" class="button_avis"><button>Je donne mon avis</button></a>
+            {% endif %}
+            {% if ticket.user == user %}
+                <a href="{% url 'ticket-modify' ticket.id %}" class="modify_link">Modifier ma demande</a>
+            {% endif %}
+        </div>
+    </div>
+    <div class="content">
+        {% if ticket.image %}
+            <img src="{{ ticket.image.url }}">
+        {% endif %}
+        <div class="details">
+            <p class="description">{{ ticket.description }}</p>
+            <p>{{ ticket.time_created }}</p>
+            <p>Un avis sur ce livre est demandé par <a href="{% url 'flux-user' ticket.user.id %}">{{ ticket.user.username }}</a>.</p>
+        </div>
+    </div>
+</article>

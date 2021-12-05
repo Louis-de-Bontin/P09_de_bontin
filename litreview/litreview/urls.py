@@ -18,26 +18,41 @@ from django.urls import path
 
 import authentication.views
 import review.views
-import review_ask.views
-import flux.views
+
+from django.contrib.auth.views import LoginView, LogoutView
+
+from django.conf import settings
+from django.conf.urls.static import static
 
 urlpatterns = [
     path('admin/', admin.site.urls),
     # Mettre le formulaire de création et de connexion sur la même page
     # Il y aura donc 2 formulaires différents, un qui log l'utilisateur, l'autre qui créé un utilisateur, puis le log
-    path('', authentication.views.SignupPage.as_view(), name='signup'),
+    path('', LoginView.as_view(
+        template_name='authentication/login.html',
+        redirect_authenticated_user = True
+    ), name='login'),
+    path('logout/', LogoutView.as_view(), name='logout'),
+    path('signup/', authentication.views.Signup.as_view(), name='signup'),
     path('password-change/', authentication.views.PasswordChange.as_view(), name='password-change'),
     path('follow/', authentication.views.FollowUsers.as_view(), name='follow'),
-    path('profil-pic-change/', authentication.views.ProfilPicChange.as_view(), name='profile-pic-change'),
+    path('profil-pic-change/', authentication.views.ProfilPicChange.as_view(), name='profile-picture-change'),
 
-    path('ticket/create/', review_ask.views.TicketCreate.as_view(), name='ticket-create'),
+    path('ticket/create/', review.views.TicketCreate.as_view(), name='ticket-create'),
     # Pour modify, il doit récupérer un id en argument et le passer dans l'url
-    path('ticket/modify/', review_ask.views.TicketModify.as_view(), name='ticket-modify'),
+    path('ticket/modify/<int:ticket_id>', review.views.TicketModify.as_view(), name='ticket-modify'),
 
-    path('review/create/answer-to-self/', review.views.ReviewCreateAnswerToSelf.as_view(), name='review-create-self'),
-    path('review/create/answer-to-someone/', review.views.ReviewCreateAnswerToSomeone.as_view(), name='review-create-answer'),
+    path('review/<int:ticket_id>/create/', review.views.ReviewCreate.as_view(), name='review-create'),
     path('review/modify/', review.views.ReviewModify.as_view(), name='review-modify'),
 
-    path('flux/', flux.views.Flux.as_view(), name='flux'),
-    path('flux/self/', flux.views.FluxSelf.as_view(), name='flux-self')
+    path('flux/', review.views.Flux.as_view(), name='flux'),
+    path('flux/self/', review.views.FluxSelf.as_view(), name='flux-self'),
+    path('flux/user/<int:user_id>/', review.views.FluxUser.as_view(), name='flux-user'),
+    path('flux/user/<str:author_name>/<str:book_title>/', review.views.FluxBook.as_view(), name='flux-book')
 ]
+
+if settings.DEBUG:
+    urlpatterns += static(
+        settings.MEDIA_URL,
+        document_root = settings.MEDIA_ROOT
+    )

@@ -1,1 +1,8 @@
-<p>Change profile pic here !</p>
+{% extends 'base.html' %}
+{% block content %}
+    <form method="post" enctype="multipart/form-data">
+        {{ form.as_p }}
+        {% csrf_token %}
+        <button type="submit">Mettre à jour ma photo de profil</button>
+    </form>
+{% endblock content %}

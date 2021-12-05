@@ -1,0 +1,22 @@
+<article>
+    <div class="entete">
+        <div>
+            <h3 class="title">{{ review.ticket.title }}</h3>
+            <h4 class="author">{{ review.ticket.author }}</h4>
+            <h4 class="answer_to">En réponse à <a href="{% url 'flux-user' review.ticket.user.id %}">{{ review.ticket.user.username }}</a></h4>
+        </div>
+        {% if not hide_button %}
+            <a href="{% url 'review-create' review.ticket.id %}" id="button_avis"><button>Je donne mon avis</button></a>
+        {% endif %}
+    </div>
+    <div class="content">
+        <img src="{{ review.ticket.image.url }}">
+        <div class="details">
+            <h5>{{ review.headline }}</h5>
+            <h2>{{ review.rating }}/5</h2>
+            <p class="description">{{ review.body }}</p>
+            <p>{{ review.time_created }}</p>
+            <p>Avis de <a href="{% url 'flux-user' review.ticket.user.id %}">{{ review.user.username }}</a>.</p>
+        </div>
+    </div>
+</article>

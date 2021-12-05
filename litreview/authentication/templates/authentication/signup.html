@@ -1,1 +1,10 @@
-<p>Hello world !</p>
+{% extends 'base.html' %}
+{% block content %}
+    <h4>Bienvenue à toi, nouvel utilisateur.</h4>
+    <form method="post">
+        {{ form.as_p }}
+        {% csrf_token %}
+        <button type="submit">Créer mon profil et me connecter</button>
+    </form>
+    <a href="{% url 'login' %}">J'ai déjà un profil en fait !</a>
+{% endblock content %}

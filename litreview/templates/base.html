@@ -1,0 +1,39 @@
+{% load static %}
+<html>
+    <head>
+        <title>LitReview</title>
+        <link rel="stylesheet" href="{% static 'style.css' %}">
+    </head>
+
+    <body>
+        <header>
+            <a href="{% url 'flux' %}" id='header_title'><h1>LitReview</h1></a>
+            <div class="header_when_autenticated">
+                {% if user.is_authenticated %}
+                    <a href="{% url 'flux-self' %}">
+                        <div id="user_icon">
+                            {% if user.profile_picture %}
+                                <img class="avatar" src='{{ user.profile_picture.url }}'>
+                            {% else %}
+                                <img class="avatar" src="{% static 'images/default_profile.jpg'%}">
+                            {% endif %}
+                                <p id='username'>{{ user.username }}</p>
+                        </div>
+                    </a>
+                    <div id='navigation'>
+                        <ul id='list_header'>
+                            <li class='puces_header'><a href="{% url 'flux' %}">Flux publique</a></li>
+                            <li class='puces_header'><a href="{% url 'flux-self' %}">Mes posts</a></li>
+                            <li class='puces_header'><a href="{% url 'profile-picture-change' %}">Changer ma photo de profil</a></li>
+                            <li class='puces_header'><a href="{% url 'follow' %}">Chercher des utilisateurs</a></li>
+                            <li class='puces_header'><a href="{% url 'logout' %}">Se déconnecter</a></li>
+                        </ul>
+                    </div>
+                {% endif %}
+            </div>
+        </header>
+        <main>
+            {% block content %}{% endblock content %}
+        </main>
+    </body>
+</html>
