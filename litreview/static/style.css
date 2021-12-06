@@ -4,7 +4,7 @@ header {
     background: linear-gradient(to right, #27b092, #40fbdc);
     /* background: red; */
     color: #f1f1f1;
-    position: sticky; top: 0;
+    /* position: sticky; top: 0; */
     display: flex;
     flex-direction: row;
     justify-content: space-between;
@@ -218,8 +218,8 @@ article {
 }
 
 .avatar {
-    max-width: 120px;
-    max-height: 120px;   
+    width: 150px;
+    height: 150px;   
 }
 
 #user_icon {
@@ -249,7 +249,7 @@ article {
     flex-direction: column;
 }
 
-.modify_link {
+.modify_link, .voir_avis, .button_avis {
     margin: auto;
     margin-top: 0px;
 }

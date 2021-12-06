@@ -19,7 +19,8 @@ from django.urls import path
 import authentication.views
 import review.views
 
-from django.contrib.auth.views import LoginView, LogoutView
+from django.contrib.auth.views import (
+    LoginView, LogoutView, PasswordChangeView, PasswordChangeDoneView)
 
 from django.conf import settings
 from django.conf.urls.static import static
@@ -34,7 +35,12 @@ urlpatterns = [
     ), name='login'),
     path('logout/', LogoutView.as_view(), name='logout'),
     path('signup/', authentication.views.Signup.as_view(), name='signup'),
-    path('password-change/', authentication.views.PasswordChange.as_view(), name='password-change'),
+    path('password-change/', PasswordChangeView.as_view(
+        template_name='authentication/password_change.html'
+        ), name='password-change'),
+    path('password-change-done/', PasswordChangeDoneView.as_view(
+        template_name='authentication/password_change_done.html'
+        ), name='password_change_done'),
     path('follow/', authentication.views.FollowUser.as_view(), name='follow'),
     path('profil-pic-change/', authentication.views.ProfilPicChange.as_view(), name='profile-picture-change'),
 
@@ -49,7 +55,8 @@ urlpatterns = [
     path('flux/', review.views.Flux.as_view(), name='flux'),
     path('flux/self/', review.views.FluxSelf.as_view(), name='flux-self'),
     path('flux/user/<int:user_id>/', review.views.FluxUser.as_view(), name='flux-user'),
-    path('flux/user/<str:author_name>/<str:book_title>/', review.views.FluxBook.as_view(), name='flux-book')
+    path('flux/user/<str:author_name>/<str:book_title>/', review.views.FluxBook.as_view(), name='flux-book'),
+    path('flux/ticket/<int:ticket_id>/', review.views.FluxTicket.as_view(), name='flux-ticket')
 ]
 
 if settings.DEBUG:

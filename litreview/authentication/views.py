@@ -1,9 +1,10 @@
+from django.contrib import auth
 from django.http import request
 from django.shortcuts import render, redirect
 from django.contrib.auth import authenticate, login
 from django.views.generic import View
 from django.contrib.auth.mixins import LoginRequiredMixin
-from . import forms
+from . import forms, models
 from django.conf import settings
 
 class Signup(View):
@@ -17,8 +18,6 @@ class Signup(View):
 
     def post(self, request):
         self.form = forms.SignupForm(request.POST)
-        print('################')
-        print(self.form.is_valid())
         if self.form.is_valid():
             user = self.form.save()
             login(request, user)
@@ -29,17 +28,6 @@ class Signup(View):
             'authentication/signup.html',
             context={'form': self.form}
         )
-
-
-class PasswordChange(LoginRequiredMixin, View):
-    def get(self, request):
-        return render(
-            request,
-            'authentication/password_change.html'
-        )
-
-    def post(self, request):
-        pass
 
 
 class ProfilPicChange(LoginRequiredMixin, View):
@@ -77,4 +65,7 @@ class FollowUser(LoginRequiredMixin, View):
         self.form = forms.FollowUserForm(request.POST, instance=request.user)
         if self.form.is_valid():
             self.form.save()
+            request.user.followed_users.add(request.user, through_defaults={
+                'followed_user': self.form
+            })
             return redirect('flux')

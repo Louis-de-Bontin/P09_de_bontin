@@ -21,4 +21,4 @@ class UploadProfilePhotoForm(forms.ModelForm):
 class FollowUserForm(forms.ModelForm):
     class Meta:
         model = User
-        fields = ['follows']
+        fields = ['followed_users']
