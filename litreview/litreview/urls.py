@@ -35,7 +35,7 @@ urlpatterns = [
     path('logout/', LogoutView.as_view(), name='logout'),
     path('signup/', authentication.views.Signup.as_view(), name='signup'),
     path('password-change/', authentication.views.PasswordChange.as_view(), name='password-change'),
-    path('follow/', authentication.views.FollowUsers.as_view(), name='follow'),
+    path('follow/', authentication.views.FollowUser.as_view(), name='follow'),
     path('profil-pic-change/', authentication.views.ProfilPicChange.as_view(), name='profile-picture-change'),
 
     path('ticket/create/', review.views.TicketCreate.as_view(), name='ticket-create'),

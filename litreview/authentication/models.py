@@ -8,8 +8,9 @@ class User(AbstractUser):
     profile_picture = models.ImageField(verbose_name='image', null=True, blank=True)
     follows = models.ManyToManyField(
         'self',
+        # through='UserFollows'
         symmetrical=False,
-        verbose_name='suits'
+        verbose_name='suit'
     )
 
 

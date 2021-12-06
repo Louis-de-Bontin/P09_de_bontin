@@ -42,17 +42,6 @@ class PasswordChange(LoginRequiredMixin, View):
         pass
 
 
-class FollowUsers(LoginRequiredMixin, View):
-    def get(self, request):
-        return render(
-            request,
-            'authentication/follow_users.html'
-        )
-
-    def post(self, request):
-        pass
-
-
 class ProfilPicChange(LoginRequiredMixin, View):
     def get(self, request):
         form = forms.UploadProfilePhotoForm(instance=request.user)
@@ -73,3 +62,19 @@ class ProfilPicChange(LoginRequiredMixin, View):
                 'authentication/profile_pic_change.html',
                 {'form': form}
             )
+
+
+class FollowUser(LoginRequiredMixin, View):
+    def get(self, request):
+        self.form = forms.FollowUserForm(instance=request.user)
+        return render(
+            request,
+            'authentication/follow_users.html',
+            {'form': self.form}
+        )
+
+    def post(self, request):
+        self.form = forms.FollowUserForm(request.POST, instance=request.user)
+        if self.form.is_valid():
+            self.form.save()
+            return redirect('flux')

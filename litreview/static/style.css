@@ -156,9 +156,9 @@ a:hover, #header_title:hover {
     text-shadow: 0px 0px 3px rgba(117, 117, 117, 3);
 }
 
-.helptext {
+/* .helptext {
     display: none;
-}
+} */
 
 #post_button {
     padding-top: 20px;
