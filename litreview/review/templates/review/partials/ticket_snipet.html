@@ -1,3 +1,4 @@
+{% load review_extras %}
 <article>
     <div class="entete">
         <div>
@@ -19,8 +20,8 @@
         {% endif %}
         <div class="details">
             <p class="description">{{ ticket.description }}</p>
-            <p>{{ ticket.time_created }}</p>
-            <p>Un avis sur ce livre est demandé par <a href="{% url 'flux-user' ticket.user.id %}">{{ ticket.user.username }}</a>.</p>
+            <p>{{ ticket|datetime_display }}</p>
+            <p>Un avis sur ce livre est demandé par <a href="{% url 'flux-user' ticket.user.id %}">{% get_poster_display ticket.user %}</a>.</p>
         </div>
     </div>
 </article>

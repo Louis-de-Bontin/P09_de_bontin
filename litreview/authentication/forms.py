@@ -7,7 +7,10 @@ class SignupForm(UserCreationForm):
         model = get_user_model()
         fields = ('username', 'email', 'first_name', 'last_name', 'profile_picture')
 
+
 class UploadProfilePhotoForm(forms.ModelForm):
+    # edit_profile_pic = forms.BooleanField(widget=forms.HiddenInput, initial=True)
+
     class Meta:
         model = get_user_model()
         fields = ('profile_picture', )

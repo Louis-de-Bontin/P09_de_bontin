@@ -43,14 +43,31 @@ class ReviewCreate(LoginRequiredMixin, View):
 
 
 class ReviewModify(LoginRequiredMixin, View):
-    def get(self, request):
+    def get(self, request, review_id):
+        self.review = get_object_or_404(models.Review, id=review_id)
+        edit_form = forms.ReviewForm(instance=self.review)
+        delete_form = forms.DeleteReviewForm()
         return render(
             request,
-            'review/review_modify.html'
+            'review/review_modify.html',
+            context={
+                'edit_form': edit_form,
+                'delete_form': delete_form
+            }
         )
 
-    def post(self, request):
-        pass
+    def post(self, request, review_id):
+        self.review = get_object_or_404(models.Review, id=review_id)
+        if 'edit_review' in request.POST:
+            edit_form = forms.ReviewForm(request.POST, instance=self.review)
+            if edit_form.is_valid():
+                edit_form.save()
+                return redirect('flux')
+        if 'delete_review' in request.POST:
+            delete_form = forms.DeleteReviewForm(request.POST)
+            if delete_form.is_valid():
+                self.review.delete()
+                return redirect('flux')
 
 #######################################
 #######################################
@@ -201,8 +218,8 @@ class TicketCreate(LoginRequiredMixin, View):
 
 class TicketModify(LoginRequiredMixin, View):
     def get(self, request, ticket_id):
-        ticket = get_object_or_404(models.Ticket, id=ticket_id)
-        edit_form = forms.TicketForm(instance=ticket)
+        self.ticket = get_object_or_404(models.Ticket, id=ticket_id)
+        edit_form = forms.TicketForm(instance=self.ticket)
         delete_form = forms.DeleteTicketForm()
         return render(
             request,
@@ -214,7 +231,60 @@ class TicketModify(LoginRequiredMixin, View):
         )
 
     def post(self, request, ticket_id):
-        pass
+        self.ticket = get_object_or_404(models.Ticket, id=ticket_id)
+        print('\n\n\n')
+        print(request.POST)
+        print('\n\n\n')
+        if 'edit_ticket' in request.POST:
+            edit_form = forms.TicketForm(request.POST, instance=self.ticket)
+            if edit_form.is_valid():
+                edit_form.save()
+                return redirect('flux')
+        if 'delete_ticket' in request.POST:
+            delete_form = forms.DeleteTicketForm(request.POST)
+            if delete_form.is_valid():
+                self.ticket.delete()
+                return redirect('flux')
+
+class ReviewAndTicketCreate(LoginRequiredMixin, View):
+    ticket_form = forms.TicketForm()
+    review_form = forms.ReviewForm()
+    def get(self, request):
+        return render(
+            request,
+            'review/ticket_review_create.html',
+            context={
+                'ticket_form': self.ticket_form,
+                'review_form': self.review_form
+            }
+        )
+
+    def post(self, request):
+        self.ticket_form = forms.TicketForm(request.POST, request.FILES)
+        self.review_form = forms.ReviewForm(request.POST, request.FILES)
+        if self.ticket_form.is_valid() and self.review_form.is_valid():
+            print('\n\n\n')
+            print(self.ticket_form)
+            print('\n\n\n')
+            print(self.review_form)
+            print('\n\n\n')
+            ticket = self.ticket_form.save(commit=False)
+            ticket.user = request.user
+            ticket.save()
+            review = self.review_form.save(commit=False)
+            review.ticket = ticket
+            review.user = request.user
+            review.save()
+            return redirect('flux-self')
+        else:
+            return render(
+                request,
+                'review/ticket_review_create.html',
+                context={
+                'ticket_form': self.ticket_form,
+                'review_form': self.review_form
+                }
+            )
 
 
 # Rajouter une page avec ticket en en-tête avec toutes les reviews dessus et moyenn de note
