@@ -1,7 +1,7 @@
 {% extends 'base.html' %}
 {% load review_extras %}
 {% block content %}
-{% include 'review/review_ticket_button.html' %}
+    {% include 'review/review_ticket_button.html' %}
     {% for instance in tickets_and_reviews %}
         {% if instance|model_type == "Ticket" %}
             {%  include 'review/partials/ticket_snipet.html' with ticket=instance %}

@@ -138,8 +138,9 @@ class FluxUser(LoginRequiredMixin, View):
 
 class FluxBook(LoginRequiredMixin, View):
     def get(self, request, author_name, book_title):
+
         tickets = models.Ticket.objects.filter(
-            Q(title=book_title) & Q(author=author_name)
+            title=book_title, author=author_name
         ).order_by('-time_created')
         
         tickets_sorted = sorted(
@@ -220,8 +221,6 @@ class TicketCreate(LoginRequiredMixin, View):
         if self.form.is_valid():
             ticket = self.form.save(commit=False)
             ticket.user = request.user
-            ticket.title = ticket.title.upper()
-            ticket.author = ticket.author.upper()
             ticket.save()
             return redirect('flux-self')
         else:
@@ -251,10 +250,7 @@ class TicketModify(LoginRequiredMixin, View):
         if 'edit_ticket' in request.POST:
             edit_form = forms.TicketForm(request.POST, instance=self.ticket)
             if edit_form.is_valid():
-                self.ticket = edit_form.save(commit=False)
-                self.ticket.title = self.ticket.title.upper()
-                self.ticket.author = self.ticket.author.upper()
-                self.ticket.save()
+                edit_form.save()
                 return redirect('flux')
         if 'delete_ticket' in request.POST:
             delete_form = forms.DeleteTicketForm(request.POST)
@@ -286,8 +282,6 @@ class ReviewAndTicketCreate(LoginRequiredMixin, View):
             print('\n\n\n')
             ticket = self.ticket_form.save(commit=False)
             ticket.user = request.user
-            ticket.title = ticket.title.upper()
-            ticket.author = ticket.author.upper()
             ticket.save()
             review = self.review_form.save(commit=False)
             review.ticket = ticket
