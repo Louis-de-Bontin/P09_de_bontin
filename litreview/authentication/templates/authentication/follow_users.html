@@ -9,7 +9,8 @@
     <div>
         <h3>Utilisateurs suivis :</h3>
         {% for followed_user in followed_users %}
-        <h6 class="follow_username">{{ followed_user.username }}</h6> <a href="{% url 'follow-user' 'unfollow' followed_user.id %}"><button>Se désabonner</button></a>
+        <a href="{% url 'flux-user' followed_user.id %}"><h6 class="follow_username">{{ followed_user.username }}</h6></a>
+        <a href="{% url 'follow-user' 'unfollow' followed_user.id %}"><button>Se désabonner</button></a>
         <hr>
     {% endfor %}
     </div>
@@ -17,7 +18,8 @@
     <div>
         <h3>Utilisateurs non suivis :</h3>
         {% for not_followed_user in not_followed_users %}
-        <h6 class="follow_username">{{ not_followed_user.username }}</h6> <a href="{% url 'follow-user' 'follow' not_followed_user.id %}"><button>S'abonner</button></a>
+        <a href="{% url 'flux-user' not_followed_user.id %}"></a><h6 class="follow_username">{{ not_followed_user.username }}</h6>
+        <a href="{% url 'follow-user' 'follow' not_followed_user.id %}"><button>S'abonner</button></a>
         <hr>
     {% endfor %}
     </div>

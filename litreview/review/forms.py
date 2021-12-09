@@ -1,10 +1,12 @@
 from django import forms
-from django.db.models import fields
 from . import models
 
 class TicketForm(forms.ModelForm):
+    """
+    Tickets creation and modification form.
+    Build with the ticket model.
+    """
     edit_ticket = forms.BooleanField(widget=forms.HiddenInput, initial=True)
-
     class Meta:
         model = models.Ticket
         fields = [
@@ -16,8 +18,11 @@ class TicketForm(forms.ModelForm):
 
 
 class ReviewForm(forms.ModelForm):
+    """
+    Review creation and modification form.
+    Build with the Review model.
+    """
     edit_review = forms.BooleanField(widget=forms.HiddenInput, initial=True)
-
     class Meta:
         model = models.Review
         fields = [
@@ -28,8 +33,14 @@ class ReviewForm(forms.ModelForm):
 
 
 class DeleteTicketForm(forms.Form):
+    """
+    Ticket deletion form.
+    """
     delete_ticket = forms.BooleanField(widget=forms.HiddenInput, initial=True)
 
 
 class DeleteReviewForm(forms.Form):
+    """
+    Ticket deletion form.
+    """
     delete_review = forms.BooleanField(widget=forms.HiddenInput, initial=True)

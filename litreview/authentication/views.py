@@ -9,6 +9,10 @@ from . import forms, models
 from django.conf import settings
 
 class Signup(View):
+    """
+    This view is made for the new profile creation.
+    It saves the form's data in a new instance of User, then log him in.
+    """
     form = forms.SignupForm()
     def get(self, request):
         return render(
@@ -32,6 +36,12 @@ class Signup(View):
 
 
 class ProfilPicChange(LoginRequiredMixin, View):
+    """
+    This view is supposed to modify a profile_picture.
+    Very similar than the signup view, with only the profile picture thing.
+    Note : I pass the user as instance in the form, because I need it to know
+    which User to update.
+    """
     def get(self, request):
         form = forms.UploadProfilePhotoForm(instance=request.user)
         return render(
@@ -54,6 +64,27 @@ class ProfilPicChange(LoginRequiredMixin, View):
 
 
 class FollowUser(LoginRequiredMixin, View):
+    '''
+    One of the most complicated view.
+    The GET request takes 2 arguments : follow_unfollow and user_id
+    When the user arrives on this view, the user_id is supposed to be 0
+    If it is, it means that no user hase been selected yet.
+    The function get_users() is called without any filter.
+    At this point, the user can see the search bar, the users he follows,
+    and the users he doesn't follows.
+    3 possibilities:
+    1) The user click on "subscribe" for a user he doesn't follow yet :
+        Send a GET request with follow_unfollow = follow and user_id =
+        the id of the user chosen.
+        It creates a new relationship (UserFollow instance), with the
+        user logged in, and the user chosen.
+    2) The user click on "unsubscribe" for a user he follows :
+        Does pretty much the same thing but inverted. follow_unfollow =
+        unfollow, it gets the users the same way, and delete the relation.
+    3) The user write something in the searchbar and press "search" :
+        The request method is post, the data is provided with a form.
+        Call the function get_user() with a filter a rebuild the querysets.
+    '''
     form = forms.SearchUser()
 
     def get(self, request, follow_unfollow, user_id):
@@ -61,6 +92,7 @@ class FollowUser(LoginRequiredMixin, View):
             if follow_unfollow == 'follow':
                 relation = models.UserFollow()
                 relation.user = request.user
+                # Set the followed user of the relation by querying it by id
                 relation.followed_user = models.User.objects.get(id=user_id)
                 try:
                     relation.save()
@@ -68,7 +100,10 @@ class FollowUser(LoginRequiredMixin, View):
                     pass
             else:
                 try:
+                    # I get the user supposed to be unfollowed
                     followed_user = models.User.objects.get(id=user_id)
+                    # I get the relation with the user logged in AND
+                    # the user followed.
                     relation = models.UserFollow.objects.get(
                         user = request.user, followed_user=followed_user
                     )

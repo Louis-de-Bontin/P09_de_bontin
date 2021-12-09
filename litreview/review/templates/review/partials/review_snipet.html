@@ -24,7 +24,7 @@
             <h2>{{ review.rating }}/5</h2>
             <p class="description">{{ review.body }}</p>
             <p>{{ review|datetime_display }}</p>
-            <p>Avis posté par <a href="{% url 'flux-user' review.ticket.user.id %}">{% get_poster_display review.user %}</a>.</p>
+            <p>Avis posté par <a href="{% url 'flux-user' review.user.id %}">{% get_poster_display review.user %}</a>.</p>
         </div>
     </div>
 </article>

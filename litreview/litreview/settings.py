@@ -121,6 +121,7 @@ USE_TZ = True
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/3.2/howto/static-files/
 
+# Sets where my static folder is
 STATIC_URL = '/static/'
 STATICFILES_DIRS = [BASE_DIR.joinpath('static/')]
 
@@ -131,9 +132,11 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 AUTH_USER_MODEL = 'authentication.User'
 
+# Redirections
 LOGIN_URL = 'login'
 LOGIN_REDIRECT_URL = 'flux'
 LOGOUT_REDIRECT_URL = 'login'
 
+# Sets where to store and look for my medias
 MEDIA_URL = '/media/'
 MEDIA_ROOT = BASE_DIR.joinpath('media/')

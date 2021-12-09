@@ -27,8 +27,8 @@ from django.conf.urls.static import static
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    # Mettre le formulaire de création et de connexion sur la même page
-    # Il y aura donc 2 formulaires différents, un qui log l'utilisateur, l'autre qui créé un utilisateur, puis le log
+    ####
+    ## Bloc authentication
     path('', LoginView.as_view(
         template_name='authentication/login.html',
         redirect_authenticated_user = True
@@ -41,25 +41,27 @@ urlpatterns = [
     path('password-change-done/', PasswordChangeDoneView.as_view(
         template_name='authentication/password_change_done.html'
         ), name='password_change_done'),
-    # path('unfollow/<int:user_id/', authentication.views.FollowUser.as_view(), name='follow'),
     path('<str:follow_unfollow>/<int:user_id>/', authentication.views.FollowUser.as_view(), name='follow-user'),
     path('profil-pic-change/', authentication.views.ProfilPicChange.as_view(), name='profile-picture-change'),
-
+    ####
+    ## Bloc tickets and reveiws
     path('ticket/create/', review.views.TicketCreate.as_view(), name='ticket-create'),
     path('ticket/modify/<int:ticket_id>/', review.views.TicketModify.as_view(), name='ticket-modify'),
-
     path('review/<int:ticket_id>/create/', review.views.ReviewCreate.as_view(), name='review-create'),
     path('review/modify/<int:review_id>/', review.views.ReviewModify.as_view(), name='review-modify'),
-
     path('review/ticket/create/', review.views.ReviewAndTicketCreate.as_view(), name='review-ticket-create'),
-
+    ####
+    ## Bloc flux
     path('flux/', review.views.Flux.as_view(), name='flux'),
     path('flux/self/', review.views.FluxSelf.as_view(), name='flux-self'),
     path('flux/user/<int:user_id>/', review.views.FluxUser.as_view(), name='flux-user'),
     path('flux/user/<str:author_name>/<str:book_title>/', review.views.FluxBook.as_view(), name='flux-book'),
     path('flux/ticket/<int:ticket_id>/', review.views.FluxTicket.as_view(), name='flux-ticket')
+    ####
 ]
 
+# DEBUG = True means that I am in a dev environement
+# Add the media urls to the urlpatterns
 if settings.DEBUG:
     urlpatterns += static(
         settings.MEDIA_URL,
