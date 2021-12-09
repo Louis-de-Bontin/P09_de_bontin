@@ -58,7 +58,7 @@ class FollowUser(LoginRequiredMixin, View):
 
     def get(self, request, follow_unfollow, user_id):
         if user_id != 0:
-            if type == 'follow':
+            if follow_unfollow == 'follow':
                 relation = models.UserFollow()
                 relation.user = request.user
                 relation.followed_user = models.User.objects.get(id=user_id)
@@ -77,7 +77,6 @@ class FollowUser(LoginRequiredMixin, View):
                     pass
         
         users = self.get_users(request)
-
         return render(
             request,
             'authentication/follow_users.html',
@@ -90,21 +89,7 @@ class FollowUser(LoginRequiredMixin, View):
 
     def post(self, request, follow_unfollow, user_id):
         self.form = forms.SearchUser(request.POST)
-
-        users = self.get_users(request, request.POST['rechercher_un_utilisateur'].upper())
-        # print(users)
-
-        # for user_grp in users:
-        #     print(user_grp)
-        #     for user in user_grp:
-        #         print(user)
-        #         print('Recherche :' , request.POST['rechercher_un_utilisateur'].upper())
-        #         print('Comparé à : ', user.username.upper())
-        #         if request.POST['rechercher_un_utilisateur'].upper() not in user.username.upper():
-        #             user_grp.remove(user)
-        
-        # print(users)
-
+        users = self.get_users(request, request.POST['rechercher_un_utilisateur'])
         return render(
             request,
             'authentication/follow_users.html',
@@ -114,44 +99,22 @@ class FollowUser(LoginRequiredMixin, View):
                 'form': self.form
             }
         )
-
     
     def get_users(self, request, filter=None):
-        # relations = list(models.UserFollow.objects.filter(
-        #     user=request.user)
-        # )
+        """
+        Function that build the queryset.
+        If the method is POST, that means that there is a filter, entered by the user
+        in an input box. That will filter the query to find the users with a username
+        containing the filter.
+        It buils 2 queryset, 1 with the followed users and the other with everyone else.
+        """
+        if filter:
+            followed_users = request.user.followed_users.filter(username__contains=filter)
+            all_users = models.User.objects.filter(username__contains=filter)
+        else:
+            followed_users = request.user.followed_users.all()
+            all_users = models.User.objects.all()
 
-        # if filter:
-        #     print(filter)
-        #     "je veux les amis dont le pseudo contienne le filtre"
-        #     "je veux les non amis dont le pseudo contien le filtre"
-        # else:
-        #     print(filter)
-        #     followed_users = models.User.objects.filter(
-        #         username=relations.
-        #     )
-        #     print('\n\n\n')
-        #     print(followed_users)
-        #     print('\n\n\n')
-        #     not_followed_users = []
-
-
-
-        relations = list(models.UserFollow.objects.filter(
-            user=request.user)
-        )
-
-        not_followed_users = list(models.User.objects.all())
-
-        followed_users = []
-        for relation in relations:
-            user_followed = relation.followed_user
-            not_followed_users.remove(relation.followed_user)
-            followed_users.append(user_followed)
-        
-        if request.user in followed_users:
-            followed_users.remove(request.user)
-        elif request.user in not_followed_users:
-            not_followed_users.remove(request.user)
+        not_followed_users = all_users.difference(followed_users)  
         
         return (followed_users, not_followed_users)

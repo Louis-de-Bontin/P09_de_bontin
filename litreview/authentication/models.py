@@ -8,6 +8,8 @@ from PIL import Image
 class User(AbstractUser):
     profile_picture = models.ImageField(verbose_name='image', null=True, blank=True)
 
+    followed_users = models.ManyToManyField(settings.AUTH_USER_MODEL, through='UserFollow', symmetrical=False)
+
     IMAGE_MAX_SIZE = (300, 500)
 
     def resize_image(self):
