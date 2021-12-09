@@ -145,11 +145,11 @@ class FollowUser(LoginRequiredMixin, View):
         """
         if filter:
             followed_users = request.user.followed_users.filter(username__contains=filter)
-            all_users = models.User.objects.filter(username__contains=filter)
+            all_users = models.User.objects.filter(username__contains=filter).exclude(username=request.user)
         else:
             followed_users = request.user.followed_users.all()
-            all_users = models.User.objects.all()
+            all_users = models.User.objects.all().exclude(username=request.user)
 
-        not_followed_users = all_users.difference(followed_users)  
+        not_followed_users = all_users.difference(followed_users)
         
         return (followed_users, not_followed_users)

@@ -4,9 +4,9 @@ from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth import login
 from django.views.generic import View
 from django.contrib.auth.mixins import LoginRequiredMixin
-from django.db.models import Q
 
-from authentication.models import User, UserFollow
+from authentication.models import User
+
 from . import forms, models
 
 from itertools import chain
@@ -327,4 +327,32 @@ class FluxTicket(LoginRequiredMixin, View):
         )
 
     def post(self, request, ticket_id):
+        pass
+
+class FluxPerso(LoginRequiredMixin, View):
+    """
+    This view displays a personalised flux for each user.
+    It displays tickets and reviews posted by users the logged in user follows,
+    his own posts, and the reviews that answer to his tickets.
+    """
+    def get(self, request):
+        followed_users = request.user.followed_users.all()
+        tickets_and_reviews = []
+        for user in followed_users:
+            tickets_set = models.Ticket.objects.filter(user=user)
+            review_set = models.Review.objects.filter(user=user)
+            tickets_and_reviews = chain(tickets_and_reviews, tickets_set, review_set)
+        # reviews_follow = 
+        # tickets_self = 
+        # reviews_self = 
+        # review_answer = 
+        # for instance in tickets_and_reviews:
+        #     print(type(instance))
+        return render(
+            request,
+            'review/flux.html',
+            context={'tickets_and_reviews': tickets_and_reviews}
+        )
+
+    def post(self, request):
         pass

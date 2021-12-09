@@ -54,6 +54,7 @@ urlpatterns = [
     ## Bloc flux
     path('flux/', review.views.Flux.as_view(), name='flux'),
     path('flux/self/', review.views.FluxSelf.as_view(), name='flux-self'),
+    path('flux/perso/', review.views.FluxPerso.as_view(), name='flux-perso'),
     path('flux/user/<int:user_id>/', review.views.FluxUser.as_view(), name='flux-user'),
     path('flux/user/<str:author_name>/<str:book_title>/', review.views.FluxBook.as_view(), name='flux-book'),
     path('flux/ticket/<int:ticket_id>/', review.views.FluxTicket.as_view(), name='flux-ticket')
