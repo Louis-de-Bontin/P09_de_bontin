@@ -42,7 +42,7 @@ urlpatterns = [
         template_name='authentication/password_change_done.html'
         ), name='password_change_done'),
     # path('unfollow/<int:user_id/', authentication.views.FollowUser.as_view(), name='follow'),
-    path('<str:type>/<int:user_id>/', authentication.views.FollowUser.as_view(), name='follow-user'),
+    path('<str:follow_unfollow>/<int:user_id>/', authentication.views.FollowUser.as_view(), name='follow-user'),
     path('profil-pic-change/', authentication.views.ProfilPicChange.as_view(), name='profile-picture-change'),
 
     path('ticket/create/', review.views.TicketCreate.as_view(), name='ticket-create'),

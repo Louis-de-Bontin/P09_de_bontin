@@ -54,7 +54,9 @@ class ProfilPicChange(LoginRequiredMixin, View):
 
 
 class FollowUser(LoginRequiredMixin, View):
-    def get(self, request, type, user_id):
+    form = forms.SearchUser()
+
+    def get(self, request, follow_unfollow, user_id):
         if user_id != 0:
             if type == 'follow':
                 relation = models.UserFollow()
@@ -81,15 +83,60 @@ class FollowUser(LoginRequiredMixin, View):
             'authentication/follow_users.html',
             context={
                 'followed_users': users[0],
-                'not_followed_users': users[1]
+                'not_followed_users': users[1],
+                'form': self.form
             }
         )
 
-    def post(self, request):
-        pass
+    def post(self, request, follow_unfollow, user_id):
+        self.form = forms.SearchUser(request.POST)
+
+        users = self.get_users(request, request.POST['rechercher_un_utilisateur'].upper())
+        # print(users)
+
+        # for user_grp in users:
+        #     print(user_grp)
+        #     for user in user_grp:
+        #         print(user)
+        #         print('Recherche :' , request.POST['rechercher_un_utilisateur'].upper())
+        #         print('Comparé à : ', user.username.upper())
+        #         if request.POST['rechercher_un_utilisateur'].upper() not in user.username.upper():
+        #             user_grp.remove(user)
+        
+        # print(users)
+
+        return render(
+            request,
+            'authentication/follow_users.html',
+            context={
+                'followed_users': users[0],
+                'not_followed_users': users[1],
+                'form': self.form
+            }
+        )
 
     
-    def get_users(self, request):
+    def get_users(self, request, filter=None):
+        # relations = list(models.UserFollow.objects.filter(
+        #     user=request.user)
+        # )
+
+        # if filter:
+        #     print(filter)
+        #     "je veux les amis dont le pseudo contienne le filtre"
+        #     "je veux les non amis dont le pseudo contien le filtre"
+        # else:
+        #     print(filter)
+        #     followed_users = models.User.objects.filter(
+        #         username=relations.
+        #     )
+        #     print('\n\n\n')
+        #     print(followed_users)
+        #     print('\n\n\n')
+        #     not_followed_users = []
+
+
+
         relations = list(models.UserFollow.objects.filter(
             user=request.user)
         )

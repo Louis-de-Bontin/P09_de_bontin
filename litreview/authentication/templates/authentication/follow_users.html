@@ -1,6 +1,11 @@
 {% extends 'base.html' %}
 {% block content %}
     <h2>S'abonner à des utilisateurs :</h2>
+    <form method="post">
+        {{ form.as_p }}
+        {% csrf_token %}
+        <button type="submit">Rechercher</button>
+    </form>
     <div>
         <h3>Utilisateurs suivis :</h3>
         {% for followed_user in followed_users %}

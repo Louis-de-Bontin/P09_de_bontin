@@ -17,7 +17,5 @@ class UploadProfilePhotoForm(forms.ModelForm):
         fields = ('profile_picture', )
 
 
-# class FollowUserForm(forms.ModelForm):
-#     class Meta:
-#         model = models.UserFollow
-#         fields = ['followed_user']
+class SearchUser(forms.Form):
+    rechercher_un_utilisateur = forms.CharField(max_length=50, required=False)
