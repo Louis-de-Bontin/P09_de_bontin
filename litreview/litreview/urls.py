@@ -41,16 +41,17 @@ urlpatterns = [
     path('password-change-done/', PasswordChangeDoneView.as_view(
         template_name='authentication/password_change_done.html'
         ), name='password_change_done'),
-    path('follow/', authentication.views.FollowUser.as_view(), name='follow'),
+    # path('unfollow/<int:user_id/', authentication.views.FollowUser.as_view(), name='follow'),
+    path('<str:type>/<int:user_id>/', authentication.views.FollowUser.as_view(), name='follow-user'),
     path('profil-pic-change/', authentication.views.ProfilPicChange.as_view(), name='profile-picture-change'),
 
     path('ticket/create/', review.views.TicketCreate.as_view(), name='ticket-create'),
-    path('ticket/modify/<int:ticket_id>', review.views.TicketModify.as_view(), name='ticket-modify'),
+    path('ticket/modify/<int:ticket_id>/', review.views.TicketModify.as_view(), name='ticket-modify'),
 
     path('review/<int:ticket_id>/create/', review.views.ReviewCreate.as_view(), name='review-create'),
-    path('review/modify/<int:review_id>', review.views.ReviewModify.as_view(), name='review-modify'),
+    path('review/modify/<int:review_id>/', review.views.ReviewModify.as_view(), name='review-modify'),
 
-    path('review/ticket/create', review.views.ReviewAndTicketCreate.as_view(), name='review-ticket-create'),
+    path('review/ticket/create/', review.views.ReviewAndTicketCreate.as_view(), name='review-ticket-create'),
 
     path('flux/', review.views.Flux.as_view(), name='flux'),
     path('flux/self/', review.views.FluxSelf.as_view(), name='flux-self'),

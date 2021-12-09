@@ -25,7 +25,7 @@
                             <li class='puces_header'><a href="{% url 'flux' %}">Flux publique</a></li>
                             <li class='puces_header'><a href="{% url 'flux-self' %}">Mes posts</a></li>
                             <li class='puces_header'><a href="{% url 'profile-picture-change' %}">Changer ma photo de profil</a></li>
-                            <li class='puces_header'><a href="{% url 'follow' %}">Gérer mes abonnements</a></li>
+                            <li class='puces_header'><a href="{% url 'follow-user' 'follow' 0 %}">Gérer mes abonnements</a></li>
                             <li class='puces_header'><a href="{% url 'password-change' %}">Modifier mon mot de passe</a></li>
                             <li class='puces_header'><a href="{% url 'logout' %}">Se déconnecter</a></li>
                         </ul>

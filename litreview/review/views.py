@@ -6,7 +6,7 @@ from django.views.generic import View
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.db.models import Q
 
-from authentication.models import User
+from authentication.models import User, UserFollow
 from . import forms, models
 
 from itertools import chain
@@ -75,6 +75,24 @@ class ReviewModify(LoginRequiredMixin, View):
 
 class Flux(LoginRequiredMixin, View):
     def get(self, request):
+        # user = request.user
+        # relations = UserFollow.objects.filter(user=user)
+        # print('\n\n\n')
+        # i = 0
+        # for relation in relations:
+        #     i+=1
+        #     print(relation.user)
+        #     print(relation.followed_user)
+        #     print('\n')
+        # if i == 0:
+        #     print(None)
+        # print('\n\n\n')
+        # tickets = models.Review.objects.filter(
+        #     user=relations.followed_user
+        # )
+        # print(tickets)
+
+
         tickets = models.Ticket.objects.all().order_by('-time_created')
         reviews = models.Review.objects.all().order_by('-time_created')
 
@@ -182,16 +200,8 @@ class FluxTicket(LoginRequiredMixin, View):
         reviews = models.Review.objects.filter(
             ticket=ticket[0]
         ).order_by('-time_created')
-        print('\n\n\n')
-        print(reviews)
-        print('\n\n\n')
+
         tickets_and_reviews = chain(ticket, reviews)
-        # print('\n\n\n')
-        # print(tickets_and_reviews)
-        # for i in tickets_and_reviews:
-        #     print(i.title)
-        #     print('\n')
-        # print('\n\n\n')
 
         return render(
             request,
@@ -248,7 +258,7 @@ class TicketModify(LoginRequiredMixin, View):
     def post(self, request, ticket_id):
         self.ticket = get_object_or_404(models.Ticket, id=ticket_id)
         if 'edit_ticket' in request.POST:
-            edit_form = forms.TicketForm(request.POST, instance=self.ticket)
+            edit_form = forms.TicketForm(request.POST, request.FILES, instance=self.ticket)
             if edit_form.is_valid():
                 edit_form.save()
                 return redirect('flux')
@@ -273,7 +283,7 @@ class ReviewAndTicketCreate(LoginRequiredMixin, View):
 
     def post(self, request):
         self.ticket_form = forms.TicketForm(request.POST, request.FILES)
-        self.review_form = forms.ReviewForm(request.POST, request.FILES)
+        self.review_form = forms.ReviewForm(request.POST)
         if self.ticket_form.is_valid() and self.review_form.is_valid():
             print('\n\n\n')
             print(self.ticket_form)

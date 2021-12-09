@@ -66,7 +66,7 @@ ul {
     font-size: 15px;
 }
 
-label, h5, h4, h3, h2 {
+label, h6, h5, h4, h3, h2 {
     color: #558baa;
     font-family: 'Ubuntu', sans-serif;
     font-weight: bold;
@@ -77,13 +77,19 @@ h5 {
     font-size: 18;
 }
 
+.follow_username {
+    font-size: 25;
+    margin: 0px;
+    padding: 0px;
+}
+
 label {
     margin-left: 55px;
     padding-top: 40px;
     font-size: 18px;
 }
 
-input {
+input, #id_description, #id_body {
     width: 76%;
     color: rgb(38, 50, 56);
     font-weight: 700;

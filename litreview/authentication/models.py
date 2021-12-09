@@ -3,34 +3,36 @@ from typing import AbstractSet
 from django.db import models
 from django.contrib.auth.models import AbstractUser
 from django.conf import settings
+from PIL import Image
 
 class User(AbstractUser):
     profile_picture = models.ImageField(verbose_name='image', null=True, blank=True)
-    follows = models.ManyToManyField(
-        'self',
-        verbose_name='suit'
+
+    IMAGE_MAX_SIZE = (300, 500)
+
+    def resize_image(self):
+        profile_picture = Image.open(self.profile_picture)
+        profile_picture.thumbnail(self.IMAGE_MAX_SIZE)
+        profile_picture.save(self.profile_picture.path)
+
+    def save(self, *args, **kwargs):
+        super().save(*args, **kwargs)
+        self.resize_image()
+
+
+class UserFollow(models.Model):
+
+    user = models.ForeignKey(
+        settings.AUTH_USER_MODEL,
+        on_delete=models.CASCADE,
+        related_name='following'
     )
-    # followed_users = models.ManyToManyField(
-    #     'self',
-    #     through='UserFollow',
-    #     verbose_name='suit',
-    #     related_name='followed_user'
-    # )
 
+    followed_user = models.ForeignKey(
+        settings.AUTH_USER_MODEL,
+        on_delete=models.CASCADE,
+        related_name='followed_by'
+    )
 
-# class UserFollow(models.Model):
-
-#     user = models.ForeignKey(
-#         settings.AUTH_USER_MODEL,
-#         on_delete=models.CASCADE,
-#         related_name='following'
-#     )
-
-#     followed_user = models.ForeignKey(
-#         settings.AUTH_USER_MODEL,
-#         on_delete=models.CASCADE,
-#         related_name='followed_by'
-#     )
-
-#     class Meta:
-#         unique_together=('user', 'followed_user')
+    class Meta:
+        unique_together=('user', 'followed_user')

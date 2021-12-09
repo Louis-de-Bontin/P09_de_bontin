@@ -1,4 +1,5 @@
 from django.contrib import auth
+from django.contrib.auth.models import User
 from django.http import request
 from django.shortcuts import render, redirect
 from django.contrib.auth import authenticate, login
@@ -17,7 +18,7 @@ class Signup(View):
         )
 
     def post(self, request):
-        self.form = forms.SignupForm(request.POST)
+        self.form = forms.SignupForm(request.POST, request.FILES)
         if self.form.is_valid():
             user = self.form.save()
             login(request, user)
@@ -53,19 +54,57 @@ class ProfilPicChange(LoginRequiredMixin, View):
 
 
 class FollowUser(LoginRequiredMixin, View):
-    def get(self, request):
-        self.form = forms.FollowUserForm(instance=request.user)
+    def get(self, request, type, user_id):
+        if user_id != 0:
+            if type == 'follow':
+                relation = models.UserFollow()
+                relation.user = request.user
+                relation.followed_user = models.User.objects.get(id=user_id)
+                try:
+                    relation.save()
+                except:
+                    pass
+            else:
+                try:
+                    followed_user = models.User.objects.get(id=user_id)
+                    relation = models.UserFollow.objects.get(
+                        user = request.user, followed_user=followed_user
+                    )
+                    relation.delete()
+                except:
+                    pass
+        
+        users = self.get_users(request)
+
         return render(
             request,
             'authentication/follow_users.html',
-            {'form': self.form}
+            context={
+                'followed_users': users[0],
+                'not_followed_users': users[1]
+            }
         )
 
     def post(self, request):
-        self.form = forms.FollowUserForm(request.POST, instance=request.user)
-        if self.form.is_valid():
-            self.form.save()
-            request.user.followed_users.add(request.user, through_defaults={
-                'followed_user': self.form
-            })
-            return redirect('flux')
+        pass
+
+    
+    def get_users(self, request):
+        relations = list(models.UserFollow.objects.filter(
+            user=request.user)
+        )
+
+        not_followed_users = list(models.User.objects.all())
+
+        followed_users = []
+        for relation in relations:
+            user_followed = relation.followed_user
+            not_followed_users.remove(relation.followed_user)
+            followed_users.append(user_followed)
+        
+        if request.user in followed_users:
+            followed_users.remove(request.user)
+        elif request.user in not_followed_users:
+            not_followed_users.remove(request.user)
+        
+        return (followed_users, not_followed_users)

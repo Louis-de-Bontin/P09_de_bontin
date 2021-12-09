@@ -8,7 +8,7 @@ from PIL import Image
 class Ticket(models.Model):
     title = models.CharField(max_length=128)
     author = models.CharField(max_length=128)
-    description = models.CharField(max_length=128, blank=True)
+    description = models.TextField(max_length=1024, blank=True)
     user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=CASCADE)
     image = models.ImageField(null=True, blank=True)
     time_created = models.DateTimeField(auto_now_add=True)
@@ -19,12 +19,6 @@ class Ticket(models.Model):
         image = Image.open(self.image)
         image.thumbnail(self.IMAGE_MAX_SIZE)
         image.save(self.image.path)
-    
-    # def upper_title(self):
-    #     return self.title.upper()
-    
-    # def upper_author(self):
-    #     return self.author.upper()
 
     def save(self, *args, **kwargs):
         self.author = self.author.upper()
@@ -44,7 +38,7 @@ class Review(models.Model):
         )
 
     headline = models.CharField(max_length=128)
-    body = models.CharField(max_length=8192, blank=True)
+    body = models.TextField(max_length=8192, blank=True)
 
     user = models.ForeignKey(
         to=settings.AUTH_USER_MODEL,
