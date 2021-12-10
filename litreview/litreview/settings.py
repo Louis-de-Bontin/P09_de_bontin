@@ -134,7 +134,7 @@ AUTH_USER_MODEL = 'authentication.User'
 
 # Redirections
 LOGIN_URL = 'login'
-LOGIN_REDIRECT_URL = 'flux'
+LOGIN_REDIRECT_URL = 'flux-perso'
 LOGOUT_REDIRECT_URL = 'login'
 
 # Sets where to store and look for my medias

@@ -2,14 +2,12 @@
 <article>
     <div class="entete">
         <div>
-            <div class="title_rating">
-                <a href="{% url 'flux-book' review.ticket.author review.ticket.title %}"><h3 class="title">{{ review.ticket.title }} - </h3></a>
-                {%  include 'review/partials/stars.html' with rating=review.rating %}
-            </div>
+            <a href="{% url 'flux-book' review.ticket.author review.ticket.title %}"><h3 class="title">{{ review.ticket.title }}</h3></a>
             <h4 class="author">{{ review.ticket.author }}</h4>
             <h4 class="answer_to">En réponse à <a href="{% url 'flux-user' review.ticket.user.id %}">{% get_poster_display review.ticket.user %}</a></h4>
         </div>
         <div class="top_right_in_content">
+            {%  include 'review/partials/stars.html' with rating=review.rating %}
             {% if not hide_button %}
                 <a href="{% url 'review-create' review.ticket.id %}" id="button_avis"><button>Je donne mon avis</button></a>
             {% endif %}
@@ -20,7 +18,7 @@
     </div>
     <div class="content">
         {% if review.ticket.image %}
-            <img src="{{ review.ticket.image.url }}">
+            <img src="{{ review.ticket.image.url }}" class="book_cover">
         {% endif %}
         <div class="details">
             <h5>{{ review.headline }}</h5>

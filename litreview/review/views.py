@@ -245,7 +245,7 @@ class FluxSelf(LoginRequiredMixin, View):
             'review/flux.html',
             context={
                 'tickets_and_reviews': pagination(tickets_and_reviews, request),
-                'user_profile': request.user,
+                # 'user_profile': request.user,
                 'message': message
             }
         )

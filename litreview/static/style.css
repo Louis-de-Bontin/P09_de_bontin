@@ -1,29 +1,71 @@
 header {
-    padding: 0px 16px;
-    border-radius: 5em;
-    background: linear-gradient(to left, #27b092, #40fbdc);
+    background: linear-gradient(to right, #27b092, #40fbdc);
     /* background: red; */
     color: #f1f1f1;
-    /* position: sticky; top: 0; */
+    height: 100%;
+    width: 200px;
+    position: fixed;
+    z-index: 1;
+    top: 0;
+    left: 0;
+    overflow-x: hidden;
+    padding-top: 15px;
+    padding-left: 10px;
+    padding-right: 10px;
     display: flex;
-    flex-direction: row;
+    flex-direction: column;
     justify-content: space-between;
-    align-items: center;
 }
 
+#header_title {
+    padding-bottom: 3px;
+    color: #ebf6f6;
+}
 
+#header_title h1 {
+    margin: 0px;
+}
+
+.avatar {
+    max-width: 200px;
+    max-height: 200px;
+    border-radius: 10%;
+    margin-left: 0px;
+    width: auto;
+    height: auto;
+}
+
+#user_icon {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-around;
+}
+
+#username {
+    text-align: center;
+}
+
+#top_left {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-around;
+}
 
 .puces_header {
     list-style-type: none;
-    transition: transform .2s;
-    margin: 0 auto;
-    padding-top: 2px;
-    padding-bottom: 2px;
+    padding: 3px;
+}
+
+#navigation {
+    margin-right: auto;
+    margin-bottom: 30px;
+    align-self: flex-end;
+    display: block;
 }
 
 main {
-    margin: auto;
-    width: 50%;
+    padding-left: 200px;
+    /* margin: auto; */
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -35,6 +77,14 @@ main {
     display: flex;
     flex-direction: column;
     align-items: center;
+}
+
+#list_header {
+    padding: 0px;
+}
+
+.profile_infos {
+    align-self: flex-start;
 }
 
 
@@ -64,6 +114,13 @@ ul {
     color: #558baa;
     font-family: 'Ubuntu', sans-serif;
     font-size: 15px;
+    margin: auto;
+}
+
+.profile {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
 }
 
 label, h6, h5, h4, h3, h2 {
@@ -75,6 +132,10 @@ label, h6, h5, h4, h3, h2 {
 
 h5 {
     font-size: 18;
+}
+
+h3 {
+    margin: auto;
 }
 
 .follow_username {
@@ -114,7 +175,6 @@ form {
     flex-direction: column;
 }
 
-
 input:focus {
     border: 2px solid rgba(0, 0, 0, 0.18) !important;
 }
@@ -153,18 +213,18 @@ a {
     padding: 5px;    
 }
 
-#header_title {
-    color: #ebf6f6;
-}
-
 a:hover, #header_title:hover {
     color: #ebf6f6;
     text-shadow: 0px 0px 3px rgba(117, 117, 117, 3);
 }
 
-/* .helptext {
+.helptext, #profile_pic_form label, #profile_picture-clear_id {
     display: none;
-} */
+}
+
+#profile_pic_form a {
+    color: rgba(0, 0, 0, 0.7);
+}
 
 #post_button {
     padding-top: 20px;
@@ -180,7 +240,7 @@ a:hover, #header_title:hover {
 
 article {
     background-color: #4a5e5944;
-    width: 1000px;
+    width: 60%;
     padding: 10px;
     margin-top: 50px;
     border-radius: 1.5em;
@@ -202,45 +262,16 @@ article {
     text-decoration: none;
 }
 
-/* .title {
-    margin-bottom: 0px;
-} */
-
 .content {
     display: flex;
     flex-direction: row;
-}
-
-.description {
-    width: 450px;
-    margin-left: auto;
-    margin-right: auto;
+    align-items: center;
 }
 
 .details {
     display: flex;
     flex-direction: column;
     margin-left: 20px;
-}
-
-.avatar {
-    width: 100px;
-    height: 100px;   
-}
-
-#user_icon {
-    margin-left: 200px;
-    margin-top: 10px;
-}
-
-.header_when_autenticated {
-    display: flex;
-    flex-direction: row;
-}
-
-#username {
-    margin: auto;
-    text-align: center;
 }
 
 .entete {
@@ -291,16 +322,20 @@ article {
     display: inline;
 }
 
+.book_cover {
+    display: block;
+    max-width:300px;
+    max-height:500px;
+    width: auto;
+    height: auto;
+    border-radius: 4%;
+}
+
 .rating {
     text-decoration:none;
 }
 
-.title_rating {
-    display: flex;
-    flex-direction: row;
-    justify-content: space-around;
-}
-
 .star_box {
-    margin: auto;
+    margin-right: 15px;
+    margin-left: auto;
 }

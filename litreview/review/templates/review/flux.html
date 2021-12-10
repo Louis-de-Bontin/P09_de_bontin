@@ -1,18 +1,19 @@
 {% extends 'base.html' %}
 {% load review_extras %}
 {% block content %}
-
-    {% if user_profile %}
-        <h1>{{ message }}</h1>
-        <img src="{{ user_profile.profile_picture.url }}">
-        {% if followed %}
-            <a href="{% url 'flux-user-unfollow' user_profile.id %}"><button>Se désabonner</button></a>
+    <div class="profile">
+        {% if user_profile %}
+            <h1>{{ message }}</h1>
+            <img src="{{ user_profile.profile_picture.url }}" class="visitor_profile_pic">
+            {% if followed %}
+                <a href="{% url 'flux-user-unfollow' user_profile.id %}"><button>Se désabonner</button></a>
+            {% else %}
+                <a href="{% url 'flux-user-follow' user_profile.id %}"><button>S'abonner</button></a>
+            {% endif %}
         {% else %}
-            <a href="{% url 'flux-user-follow' user_profile.id %}"><button>S'abonner</button></a>
+            {% include 'review/review_ticket_button.html' %}
         {% endif %}
-    {% else %}
-        {% include 'review/review_ticket_button.html' %}
-    {% endif %}
+    </div>
     {% for instance in tickets_and_reviews %}
         {% if instance|model_type == "Ticket" %}
             {%  include 'review/partials/ticket_snipet.html' with ticket=instance %}

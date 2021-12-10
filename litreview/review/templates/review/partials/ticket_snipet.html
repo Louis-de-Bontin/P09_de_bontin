@@ -17,10 +17,10 @@
     </div>
     <div class="content">
         {% if ticket.image %}
-            <img src="{{ ticket.image.url }}">
+            <img src="{{ ticket.image.url }}" class="book_cover">
         {% endif %}
         <div class="details">
-            <p class="description">{{ ticket.description }}</p>
+            <h5>{{ ticket.description }}</h5>
             <p>{{ ticket|datetime_display }}</p>
             {% if ticket.user.username == user.username %}
                 <p>Un avis sur ce livre est demandé par <a href="{% url 'flux-self' %}">{% get_poster_display ticket.user %}</a>.</p>
