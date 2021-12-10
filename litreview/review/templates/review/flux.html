@@ -1,7 +1,18 @@
 {% extends 'base.html' %}
 {% load review_extras %}
 {% block content %}
-    {% include 'review/review_ticket_button.html' %}
+
+    {% if user_profile %}
+        <h1>{{ message }}</h1>
+        <img src="{{ user_profile.profile_picture.url }}">
+        {% if followed %}
+            <a href="{% url 'flux-user-unfollow' user_profile.id %}"><button>Se désabonner</button></a>
+        {% else %}
+            <a href="{% url 'flux-user-follow' user_profile.id %}"><button>S'abonner</button></a>
+        {% endif %}
+    {% else %}
+        {% include 'review/review_ticket_button.html' %}
+    {% endif %}
     {% for instance in tickets_and_reviews %}
         {% if instance|model_type == "Ticket" %}
             {%  include 'review/partials/ticket_snipet.html' with ticket=instance %}
@@ -9,4 +20,20 @@
             {%  include 'review/partials/review_snipet.html' with review=instance %}
         {% endif %}
     {% endfor %}
+    <span>
+        {% if tickets_and_reviews.has_previous %}
+            <a href="?page=1">« première</a>
+            <a href="?page={{ tickets_and_reviews.previous_page_number }}">précédente</a>
+        {% endif %}
+    
+        <span>
+            Page {{ tickets_and_reviews.number }} sur {{ tickets_and_reviews.paginator.num_pages }}.
+
+        </span>
+        {% if tickets_and_reviews.has_next %}
+            <a href="?page={{ tickets_and_reviews.next_page_number }}">suivante</a>
+            
+            <a href="?page={{ tickets_and_reviews.paginator.num_pages }}">dernière »</a>
+        {% endif %}
+    </span>
 {% endblock content %}

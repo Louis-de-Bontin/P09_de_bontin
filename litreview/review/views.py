@@ -4,12 +4,14 @@ from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth import login
 from django.views.generic import View
 from django.contrib.auth.mixins import LoginRequiredMixin
+from django.core.paginator import Paginator
 
-from authentication.models import User
+from authentication.models import User, UserFollow
 
 from . import forms, models
 
 from itertools import chain
+
 
 #######################################
 #############  Ticket  ################
@@ -195,6 +197,13 @@ class ReviewModify(LoginRequiredMixin, View):
 #######################################
 ##############   FLUX   ###############
 
+def pagination(data, request):
+    data = list(data)
+    paginator = Paginator(data, 5)
+    page_number = request.GET.get('page')
+    page_obj = paginator.get_page(page_number)
+    return page_obj
+
 class Flux(LoginRequiredMixin, View):
     """
     Display ALL the tickets and ALL the reviews sorted by date.
@@ -207,10 +216,11 @@ class Flux(LoginRequiredMixin, View):
             key=lambda instance: instance.time_created,
             reverse=True
         )
+
         return render(
             request,
             'review/flux.html',
-            context={'tickets_and_reviews': tickets_and_reviews}
+            context={'tickets_and_reviews': pagination(tickets_and_reviews, request)}
         )
 
     def post(self, request):
@@ -229,10 +239,15 @@ class FluxSelf(LoginRequiredMixin, View):
             key=lambda instance: instance.time_created,
             reverse=True
         )
+        message = "Bienvenu sur votre profil " + request.user.username + "."
         return render(
             request,
             'review/flux.html',
-            context={'tickets_and_reviews': tickets_and_reviews}
+            context={
+                'tickets_and_reviews': pagination(tickets_and_reviews, request),
+                'user_profile': request.user,
+                'message': message
+            }
         )
 
     def post(self, request):
@@ -244,6 +259,38 @@ class FluxUser(LoginRequiredMixin, View):
     His id it passed in a GET request.
     """
     def get(self, request, user_id):
+        """
+        The first bloc is here to allow the user to follow or unfollow
+        the profil of the user he is watching.
+        The second bloc is more or less similar to the others Flux views.
+        """
+
+        ####################################
+
+        if 'follow' in str(request):
+            relation = UserFollow()
+            relation.user = request.user
+            # Set the followed user of the relation by querying it by id
+            relation.followed_user = User.objects.get(id=user_id)
+            try:
+                relation.save()
+            except:
+                pass
+        if 'unfollow' in str(request):
+            try:
+                # I get the user supposed to be unfollowed
+                followed_user = User.objects.get(id=user_id)
+                # I get the relation with the user logged in AND
+                # the user followed.
+                relation = UserFollow.objects.get(
+                    user = request.user, followed_user=followed_user
+                )
+                relation.delete()
+            except:
+                pass
+
+        ###############################
+
         user = User.objects.get(id=user_id)
         tickets = models.Ticket.objects.filter(user=user).order_by('-time_created')
         reviews = models.Review.objects.filter(user=user).order_by('-time_created')
@@ -252,11 +299,27 @@ class FluxUser(LoginRequiredMixin, View):
             key=lambda instance: instance.time_created,
             reverse=True
         )
+        message = "Bienvenu sur le profile de " + user.username + "."
+        relation = UserFollow.objects.filter(
+            user=request.user, followed_user=user
+        )
+        followed = False
+        if len(list(relation)) > 0:
+            followed = True
+
         return render(
             request,
             'review/flux.html',
-            context={'tickets_and_reviews': tickets_and_reviews}
+            context={
+                'tickets_and_reviews': pagination(
+                    tickets_and_reviews, request),
+                    'user_profile': user,
+                    'message': message,
+                    'followed': followed
+            }
         )
+
+        ####################################
 
     def post(self, request):
         pass
@@ -301,7 +364,7 @@ class FluxBook(LoginRequiredMixin, View):
         return render(
             request,
             'review/flux.html',
-            context={'tickets_and_reviews': tickets_and_reviews}
+            context={'tickets_and_reviews': pagination(tickets_and_reviews, request)}
         )
 
     def post(self, request):
@@ -336,22 +399,30 @@ class FluxPerso(LoginRequiredMixin, View):
     his own posts, and the reviews that answer to his tickets.
     """
     def get(self, request):
+        # Get the tickets and reviews of the logged in user
+        tickets_self = models.Ticket.objects.filter(user=request.user).order_by('-time_created')
+        reviews_self = models.Review.objects.filter(user=request.user).order_by('-time_created')
+        tickets_and_reviews = chain(tickets_self, reviews_self)
+        
+        # Get the reviews that answer to the tickets posted by the logged in user
+        review_answer = []
+        for ticket in tickets_self:
+            review_answer = models.Review.objects.filter(ticket=ticket).order_by('-time_created')
+            tickets_and_reviews = chain(review_answer, tickets_and_reviews)
+
+        # Get the tickets and reviews posted by users the logged in user follows
         followed_users = request.user.followed_users.all()
-        tickets_and_reviews = []
         for user in followed_users:
-            tickets_set = models.Ticket.objects.filter(user=user)
-            review_set = models.Review.objects.filter(user=user)
-            tickets_and_reviews = chain(tickets_and_reviews, tickets_set, review_set)
-        # reviews_follow = 
-        # tickets_self = 
-        # reviews_self = 
-        # review_answer = 
-        # for instance in tickets_and_reviews:
-        #     print(type(instance))
+            tickets_follow = models.Ticket.objects.filter(user=user).order_by('-time_created')
+            review_follow = models.Review.objects.filter(user=user).order_by('-time_created')
+            tickets_and_reviews = chain(tickets_and_reviews, tickets_follow, review_follow)
+
         return render(
             request,
             'review/flux.html',
-            context={'tickets_and_reviews': tickets_and_reviews}
+            context={'tickets_and_reviews': pagination(
+                tickets_and_reviews, request)
+            }
         )
 
     def post(self, request):

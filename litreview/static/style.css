@@ -202,9 +202,9 @@ article {
     text-decoration: none;
 }
 
-.title {
+/* .title {
     margin-bottom: 0px;
-}
+} */
 
 .content {
     display: flex;
@@ -283,4 +283,24 @@ article {
     font-size: 18px;
     margin-right: 5px;
     margin-left: 5px;
+}
+
+.star {
+    width: 15px;
+    height: 15px;
+    display: inline;
+}
+
+.rating {
+    text-decoration:none;
+}
+
+.title_rating {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-around;
+}
+
+.star_box {
+    margin: auto;
 }

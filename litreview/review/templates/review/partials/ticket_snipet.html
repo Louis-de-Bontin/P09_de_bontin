@@ -22,7 +22,11 @@
         <div class="details">
             <p class="description">{{ ticket.description }}</p>
             <p>{{ ticket|datetime_display }}</p>
-            <p>Un avis sur ce livre est demandé par <a href="{% url 'flux-user' ticket.user.id %}">{% get_poster_display ticket.user %}</a>.</p>
+            {% if ticket.user.username == user.username %}
+                <p>Un avis sur ce livre est demandé par <a href="{% url 'flux-self' %}">{% get_poster_display ticket.user %}</a>.</p>
+            {% else %}
+                <p>Un avis sur ce livre est demandé par <a href="{% url 'flux-user' ticket.user.id %}">{% get_poster_display ticket.user %}</a>.</p>
+            {% endif %}
         </div>
     </div>
 </article>

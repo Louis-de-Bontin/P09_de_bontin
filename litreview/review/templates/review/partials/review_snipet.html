@@ -2,7 +2,10 @@
 <article>
     <div class="entete">
         <div>
-            <a href="{% url 'flux-book' review.ticket.author review.ticket.title %}"><h3 class="title">{{ review.ticket.title }}</h3></a>
+            <div class="title_rating">
+                <a href="{% url 'flux-book' review.ticket.author review.ticket.title %}"><h3 class="title">{{ review.ticket.title }} - </h3></a>
+                {%  include 'review/partials/stars.html' with rating=review.rating %}
+            </div>
             <h4 class="author">{{ review.ticket.author }}</h4>
             <h4 class="answer_to">En réponse à <a href="{% url 'flux-user' review.ticket.user.id %}">{% get_poster_display review.ticket.user %}</a></h4>
         </div>
@@ -21,7 +24,6 @@
         {% endif %}
         <div class="details">
             <h5>{{ review.headline }}</h5>
-            <h2>{{ review.rating }}/5</h2>
             <p class="description">{{ review.body }}</p>
             <p>{{ review|datetime_display }}</p>
             <p>Avis posté par <a href="{% url 'flux-user' review.user.id %}">{% get_poster_display review.user %}</a>.</p>

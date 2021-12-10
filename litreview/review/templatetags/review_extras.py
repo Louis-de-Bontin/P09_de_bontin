@@ -5,7 +5,6 @@ register = template.Library()
 
 @register.filter
 def model_type(value):
-    print(type(value).__name__)
     return type(value).__name__
 
 @register.simple_tag(takes_context=True)

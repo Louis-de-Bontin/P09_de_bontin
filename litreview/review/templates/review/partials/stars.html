@@ -1,0 +1,44 @@
+{% load static %}
+<div class="star_box">
+    {% if rating == 1 %}
+    <ul class="rating">
+        <li class='star'><img src="{% static 'images/star-icon.png'%}" class='star'></li>
+        <li class='star'><img src="{% static 'images/star-icon-empty.png'%}" class='star'></li>
+        <li class='star'><img src="{% static 'images/star-icon-empty.png'%}" class='star'></li>
+        <li class='star'><img src="{% static 'images/star-icon-empty.png'%}" class='star'></li>
+        <li class='star'><img src="{% static 'images/star-icon-empty.png'%}" class='star'></li>
+    </ul>
+    {% elif rating == 2 %}
+    <ul class="rating">
+        <li><img src="{% static 'images/star-icon.png'%}"  class='star'></li>
+        <li class='star'><img src="{% static 'images/star-icon.png'%}" class='star'></li>
+        <li class='star'><img src="{% static 'images/star-icon-empty.png'%}" class='star'></li>
+        <li class='star'><img src="{% static 'images/star-icon-empty.png'%}" class='star'></li>
+        <li class='star'><img src="{% static 'images/star-icon-empty.png'%}" class='star'></li>
+    </ul>
+    {% elif rating == 3 %}
+    <ul class="rating">
+        <li class='star'><img src="{% static 'images/star-icon.png'%}" class='star'></li>
+        <li class='star'><img src="{% static 'images/star-icon.png'%}" class='star'></li>
+        <li class='star'><img src="{% static 'images/star-icon.png'%}" class='star'></li>
+        <li class='star'><img src="{% static 'images/star-icon-empty.png'%}" class='star'></li>
+        <li class='star'><img src="{% static 'images/star-icon-empty.png'%}" class='star'></li>
+    </ul>
+    {% elif rating == 4 %}
+    <ul class="rating">
+        <li class='star'><img src="{% static 'images/star-icon.png'%}" class='star'></li>
+        <li class='star'><img src="{% static 'images/star-icon.png'%}" class='star'></li>
+        <li class='star'><img src="{% static 'images/star-icon.png'%}" class='star'></li>
+        <li class='star'><img src="{% static 'images/star-icon.png'%}" class='star'></li>
+        <li class='star'><img src="{% static 'images/star-icon-empty.png'%}" class='star'></li>
+    </ul>
+    {% elif rating == 5 %}
+    <ul class="rating">
+        <li class='star'><img src="{% static 'images/star-icon.png'%}" class='star'></li>
+        <li class='star'><img src="{% static 'images/star-icon.png'%}" class='star'></li>
+        <li class='star'><img src="{% static 'images/star-icon.png'%}" class='star'></li>
+        <li class='star'><img src="{% static 'images/star-icon.png'%}" class='star'></li>
+        <li class='star'><img src="{% static 'images/star-icon.png'%}" class='star'></li>
+    </ul>
+    {% endif %}
+</div>
