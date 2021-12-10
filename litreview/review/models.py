@@ -5,6 +5,7 @@ from django.db import models
 from django.db.models.deletion import CASCADE
 from PIL import Image
 
+
 class Ticket(models.Model):
     """
     Tcket model.
@@ -21,6 +22,7 @@ class Ticket(models.Model):
     time_created = models.DateTimeField(auto_now_add=True)
 
     IMAGE_MAX_SIZE = (300, 500)
+
     def resize_image(self):
         image = Image.open(self.image)
         image.thumbnail(self.IMAGE_MAX_SIZE)
@@ -30,8 +32,10 @@ class Ticket(models.Model):
         self.author = self.author.upper()
         self.title = self.title.upper()
         super().save(*args, **kwargs)
-        self.resize_image()
-
+        try:
+            self.resize_image()
+        except:
+            pass
 
 
 class Review(models.Model):

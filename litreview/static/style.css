@@ -145,7 +145,7 @@ h3 {
 }
 
 label {
-    margin-left: 55px;
+    /* margin-left: 55px; */
     padding-top: 40px;
     font-size: 18px;
 }
@@ -218,12 +218,22 @@ a:hover, #header_title:hover {
     text-shadow: 0px 0px 3px rgba(117, 117, 117, 3);
 }
 
-.helptext, #profile_pic_form label, #profile_picture-clear_id {
+.helptext, #profile_pic_form label, #profile_picture-clear_id, #image-clear_id, form br {
     display: none;
 }
 
-#profile_pic_form a {
+#profile_pic_form a, .modify_form a {
     color: rgba(0, 0, 0, 0.7);
+}
+
+form p {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+}
+
+form label {
+    margin-left: Opx;
 }
 
 #post_button {

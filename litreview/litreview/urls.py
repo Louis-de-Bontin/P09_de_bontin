@@ -13,7 +13,7 @@ Including another URLconf
     1. Import the include() function: from django.urls import include, path
     2. Add a URL to urlpatterns:  path('blog/', include('blog.urls'))
 """
-from django.contrib import admin, auth
+from django.contrib import admin
 from django.urls import path
 
 import authentication.views
@@ -28,10 +28,10 @@ from django.conf.urls.static import static
 urlpatterns = [
     path('admin/', admin.site.urls),
     ####
-    ## Bloc authentication
+    # Bloc authentication
     path('', LoginView.as_view(
         template_name='authentication/login.html',
-        redirect_authenticated_user = True
+        redirect_authenticated_user=True
     ), name='login'),
     path('logout/', LogoutView.as_view(), name='logout'),
     path('signup/', authentication.views.Signup.as_view(), name='signup'),
@@ -41,25 +41,54 @@ urlpatterns = [
     path('password-change-done/', PasswordChangeDoneView.as_view(
         template_name='authentication/password_change_done.html'
         ), name='password_change_done'),
-    path('<str:follow_unfollow>/<int:user_id>/', authentication.views.FollowUser.as_view(), name='follow-user'),
-    path('profil-pic-change/', authentication.views.ProfilPicChange.as_view(), name='profile-picture-change'),
+    path(
+        '<str:follow_unfollow>/<int:user_id>/',
+        authentication.views.FollowUser.as_view(),
+        name='follow-user'
+    ),
+    path(
+        'profil-pic-change/',
+        authentication.views.ProfilPicChange.as_view(),
+        name='profile-picture-change'
+    ),
     ####
-    ## Bloc tickets and reveiws
-    path('ticket/create/', review.views.TicketCreate.as_view(), name='ticket-create'),
-    path('ticket/modify/<int:ticket_id>/', review.views.TicketModify.as_view(), name='ticket-modify'),
-    path('review/<int:ticket_id>/create/', review.views.ReviewCreate.as_view(), name='review-create'),
-    path('review/modify/<int:review_id>/', review.views.ReviewModify.as_view(), name='review-modify'),
-    path('review/ticket/create/', review.views.ReviewAndTicketCreate.as_view(), name='review-ticket-create'),
+    # Bloc tickets and reveiws
+    path(
+        'ticket/create/',
+        review.views.TicketCreate.as_view(), name='ticket-create'),
+    path(
+        'ticket/modify/<int:ticket_id>/',
+        review.views.TicketModify.as_view(), name='ticket-modify'),
+    path(
+        'review/<int:ticket_id>/create/',
+        review.views.ReviewCreate.as_view(), name='review-create'),
+    path(
+        'review/modify/<int:review_id>/',
+        review.views.ReviewModify.as_view(), name='review-modify'),
+    path(
+        'review/ticket/create/',
+        review.views.ReviewAndTicketCreate.as_view(),
+        name='review-ticket-create'),
     ####
-    ## Bloc flux
+    # Bloc flux
     path('flux/', review.views.Flux.as_view(), name='flux'),
     path('flux/self/', review.views.FluxSelf.as_view(), name='flux-self'),
     path('flux/perso/', review.views.FluxPerso.as_view(), name='flux-perso'),
-    path('flux/user/<int:user_id>/', review.views.FluxUser.as_view(), name='flux-user'),
-    path('flux/user/<int:user_id>/follow', review.views.FluxUser.as_view(), name='flux-user-follow'),
-    path('flux/user/<int:user_id>/unfollow', review.views.FluxUser.as_view(), name='flux-user-unfollow'),
-    path('flux/user/<str:author_name>/<str:book_title>/', review.views.FluxBook.as_view(), name='flux-book'),
-    path('flux/ticket/<int:ticket_id>/', review.views.FluxTicket.as_view(), name='flux-ticket')
+    path(
+        'flux/user/<int:user_id>/',
+        review.views.FluxUser.as_view(), name='flux-user'),
+    path(
+        'flux/user/<int:user_id>/follow',
+        review.views.FluxUser.as_view(), name='flux-user-follow'),
+    path(
+        'flux/user/<int:user_id>/unfollow',
+        review.views.FluxUser.as_view(), name='flux-user-unfollow'),
+    path(
+        'flux/user/<str:author_name>/<str:book_title>/',
+        review.views.FluxBook.as_view(), name='flux-book'),
+    path(
+        'flux/ticket/<int:ticket_id>/',
+        review.views.FluxTicket.as_view(), name='flux-ticket')
     ####
 ]
 
@@ -68,5 +97,5 @@ urlpatterns = [
 if settings.DEBUG:
     urlpatterns += static(
         settings.MEDIA_URL,
-        document_root = settings.MEDIA_ROOT
+        document_root=settings.MEDIA_ROOT
     )

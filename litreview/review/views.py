@@ -1,7 +1,5 @@
-import django
-from django.db.models.query import QuerySet
+from django.conf import settings
 from django.shortcuts import render, redirect, get_object_or_404
-from django.contrib.auth import login
 from django.views.generic import View
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.core.paginator import Paginator
@@ -23,6 +21,7 @@ class TicketCreate(LoginRequiredMixin, View):
     instance of a ticket model.
     """
     form = forms.TicketForm()
+
     def get(self, request):
         return render(
             request,
@@ -36,7 +35,7 @@ class TicketCreate(LoginRequiredMixin, View):
             ticket = self.form.save(commit=False)
             ticket.user = request.user
             ticket.save()
-            return redirect('flux-self')
+            return redirect(settings.LOGIN_REDIRECT_URL)
         else:
             return render(
                 request,
@@ -62,34 +61,38 @@ class TicketModify(LoginRequiredMixin, View):
             'review/ticket_modify.html',
             context={
                 'edit_form': edit_form,
-                'delete_form':delete_form
+                'delete_form': delete_form
             }
         )
 
     def post(self, request, ticket_id):
         self.ticket = get_object_or_404(models.Ticket, id=ticket_id)
         if 'edit_ticket' in request.POST:
-            edit_form = forms.TicketForm(request.POST, request.FILES, instance=self.ticket)
+            edit_form = forms.TicketForm(
+                request.POST, request.FILES, instance=self.ticket)
             if edit_form.is_valid():
                 edit_form.save()
-                return redirect('flux')
+                return redirect(settings.LOGIN_REDIRECT_URL)
         if 'delete_ticket' in request.POST:
             delete_form = forms.DeleteTicketForm(request.POST)
             if delete_form.is_valid():
                 self.ticket.delete()
-                return redirect('flux')
+                return redirect(settings.LOGIN_REDIRECT_URL)
+
 
 class ReviewAndTicketCreate(LoginRequiredMixin, View):
     """
     Create a review without a ticket.
-    It will display 2 forms, one for the ticket creation, and one for the review.
-    The submit button is commun, so both of the instances are created at the same
-    time.
+    It will display 2 forms, one for the ticket creation, and one
+    for the review.
+    The submit button is commun, so both of the instances are created
+    at the same time.
     It saves first the ticket, then the review, because the review needs to be
     linked to a ticket.
     """
     ticket_form = forms.TicketForm()
     review_form = forms.ReviewForm()
+
     def get(self, request):
         return render(
             request,
@@ -111,19 +114,20 @@ class ReviewAndTicketCreate(LoginRequiredMixin, View):
             review.ticket = ticket
             review.user = request.user
             review.save()
-            return redirect('flux-self')
+            return redirect(settings.LOGIN_REDIRECT_URL)
         else:
             return render(
                 request,
                 'review/ticket_review_create.html',
                 context={
-                'ticket_form': self.ticket_form,
-                'review_form': self.review_form
+                    'ticket_form': self.ticket_form,
+                    'review_form': self.review_form
                 }
             )
 
 #######################################
 ##############   Review   #############
+
 
 class ReviewCreate(LoginRequiredMixin, View):
     """
@@ -132,12 +136,13 @@ class ReviewCreate(LoginRequiredMixin, View):
     If the id doesn't exists, return a 404 error.
     """
     form = forms.ReviewForm()
+
     def get(self, request, ticket_id):
         self.ticket = get_object_or_404(models.Ticket, id=ticket_id)
         return render(
             request,
             'review/review_create.html',
-            context = {
+            context={
                 'form': self.form,
                 'ticket': self.ticket,
                 'hide_button': True
@@ -151,7 +156,7 @@ class ReviewCreate(LoginRequiredMixin, View):
             review.ticket = models.Ticket.objects.get(id=ticket_id)
             review.user = request.user
             review.save()
-            return redirect('flux-self')
+            return redirect(settings.LOGIN_REDIRECT_URL)
         else:
             return render(
                 request,
@@ -187,15 +192,16 @@ class ReviewModify(LoginRequiredMixin, View):
             edit_form = forms.ReviewForm(request.POST, instance=self.review)
             if edit_form.is_valid():
                 edit_form.save()
-                return redirect('flux')
+                return redirect(settings.LOGIN_REDIRECT_URL)
         if 'delete_review' in request.POST:
             delete_form = forms.DeleteReviewForm(request.POST)
             if delete_form.is_valid():
                 self.review.delete()
-                return redirect('flux')
+                return redirect(settings.LOGIN_REDIRECT_URL)
 
 #######################################
 ##############   FLUX   ###############
+
 
 def pagination(data, request):
     data = list(data)
@@ -203,6 +209,7 @@ def pagination(data, request):
     page_number = request.GET.get('page')
     page_obj = paginator.get_page(page_number)
     return page_obj
+
 
 class Flux(LoginRequiredMixin, View):
     """
@@ -220,7 +227,8 @@ class Flux(LoginRequiredMixin, View):
         return render(
             request,
             'review/flux.html',
-            context={'tickets_and_reviews': pagination(tickets_and_reviews, request)}
+            context={'tickets_and_reviews': pagination(
+                tickets_and_reviews, request)}
         )
 
     def post(self, request):
@@ -232,8 +240,10 @@ class FluxSelf(LoginRequiredMixin, View):
     Display the tickets and the reviews posted by the user logged in.
     """
     def get(self, request):
-        tickets = models.Ticket.objects.filter(user=request.user).order_by('-time_created')
-        reviews = models.Review.objects.filter(user=request.user).order_by('-time_created')
+        tickets = models.Ticket.objects.filter(
+            user=request.user).order_by('-time_created')
+        reviews = models.Review.objects.filter(
+            user=request.user).order_by('-time_created')
         tickets_and_reviews = sorted(
             chain(tickets, reviews),
             key=lambda instance: instance.time_created,
@@ -244,7 +254,8 @@ class FluxSelf(LoginRequiredMixin, View):
             request,
             'review/flux.html',
             context={
-                'tickets_and_reviews': pagination(tickets_and_reviews, request),
+                'tickets_and_reviews': pagination(
+                    tickets_and_reviews, request),
                 # 'user_profile': request.user,
                 'message': message
             }
@@ -252,6 +263,7 @@ class FluxSelf(LoginRequiredMixin, View):
 
     def post(self, request):
         pass
+
 
 class FluxUser(LoginRequiredMixin, View):
     """
@@ -283,7 +295,7 @@ class FluxUser(LoginRequiredMixin, View):
                 # I get the relation with the user logged in AND
                 # the user followed.
                 relation = UserFollow.objects.get(
-                    user = request.user, followed_user=followed_user
+                    user=request.user, followed_user=followed_user
                 )
                 relation.delete()
             except:
@@ -292,8 +304,10 @@ class FluxUser(LoginRequiredMixin, View):
         ###############################
 
         user = User.objects.get(id=user_id)
-        tickets = models.Ticket.objects.filter(user=user).order_by('-time_created')
-        reviews = models.Review.objects.filter(user=user).order_by('-time_created')
+        tickets = models.Ticket.objects.filter(
+            user=user).order_by('-time_created')
+        reviews = models.Review.objects.filter(
+            user=user).order_by('-time_created')
         tickets_and_reviews = sorted(
             chain(tickets, reviews),
             key=lambda instance: instance.time_created,
@@ -313,9 +327,9 @@ class FluxUser(LoginRequiredMixin, View):
             context={
                 'tickets_and_reviews': pagination(
                     tickets_and_reviews, request),
-                    'user_profile': user,
-                    'message': message,
-                    'followed': followed
+                'user_profile': user,
+                'message': message,
+                'followed': followed
             }
         )
 
@@ -327,10 +341,11 @@ class FluxUser(LoginRequiredMixin, View):
 
 class FluxBook(LoginRequiredMixin, View):
     """
-    This view displays all the tickets and reviews related to a particular book.
+    This view displays all the tickets and reviews related to a particular
+    book.
     It gets the tickets/reviews by the title and author names.
-    I know this code is not clean, but it wasn't in the specifications, so we can
-    still get rid of this feature.
+    I know this code is not clean, but it wasn't in the specifications, so we
+    can still get rid of this feature.
     """
     def get(self, request, author_name, book_title):
         tickets = models.Ticket.objects.filter(
@@ -350,11 +365,11 @@ class FluxBook(LoginRequiredMixin, View):
             ).order_by('-time_created')
 
             reviews_sorted += sorted(
-            reviews,
-            key=lambda instance: instance.time_created,
-            reverse=True
+                reviews,
+                key=lambda instance: instance.time_created,
+                reverse=True
             )
-        
+
         tickets_and_reviews = sorted(
             chain(reviews_sorted, tickets_sorted),
             key=lambda instance: instance.time_created,
@@ -364,7 +379,8 @@ class FluxBook(LoginRequiredMixin, View):
         return render(
             request,
             'review/flux.html',
-            context={'tickets_and_reviews': pagination(tickets_and_reviews, request)}
+            context={'tickets_and_reviews': pagination(
+                tickets_and_reviews, request)}
         )
 
     def post(self, request):
@@ -376,7 +392,8 @@ class FluxTicket(LoginRequiredMixin, View):
     This view displays one ticket and all the reviews related to it.
     """
     def get(self, request, ticket_id):
-        ticket = models.Ticket.objects.filter(id=ticket_id).order_by('-time_created')
+        ticket = models.Ticket.objects.filter(
+            id=ticket_id).order_by('-time_created')
         reviews = models.Review.objects.filter(
             ticket=ticket[0]
         ).order_by('-time_created')
@@ -392,6 +409,7 @@ class FluxTicket(LoginRequiredMixin, View):
     def post(self, request, ticket_id):
         pass
 
+
 class FluxPerso(LoginRequiredMixin, View):
     """
     This view displays a personalised flux for each user.
@@ -400,22 +418,32 @@ class FluxPerso(LoginRequiredMixin, View):
     """
     def get(self, request):
         # Get the tickets and reviews of the logged in user
-        tickets_self = models.Ticket.objects.filter(user=request.user).order_by('-time_created')
-        reviews_self = models.Review.objects.filter(user=request.user).order_by('-time_created')
+        tickets_self = models.Ticket.objects.filter(
+            user=request.user).order_by('-time_created')
+        reviews_self = models.Review.objects.filter(
+            user=request.user).order_by('-time_created')
         tickets_and_reviews = chain(tickets_self, reviews_self)
-        
-        # Get the reviews that answer to the tickets posted by the logged in user
+
+        # Get the reviews that answer to the tickets posted by
+        # the logged in user
         review_answer = []
         for ticket in tickets_self:
-            review_answer = models.Review.objects.filter(ticket=ticket).order_by('-time_created')
+            review_answer = models.Review.objects.filter(
+                ticket=ticket).order_by('-time_created')
             tickets_and_reviews = chain(review_answer, tickets_and_reviews)
 
-        # Get the tickets and reviews posted by users the logged in user follows
+        # Get the data posted by users the logged in user follows
         followed_users = request.user.followed_users.all()
         for user in followed_users:
-            tickets_follow = models.Ticket.objects.filter(user=user).order_by('-time_created')
-            review_follow = models.Review.objects.filter(user=user).order_by('-time_created')
-            tickets_and_reviews = chain(tickets_and_reviews, tickets_follow, review_follow)
+            tickets_follow = models.Ticket.objects.filter(
+                user=user).order_by('-time_created')
+            review_follow = models.Review.objects.filter(
+                user=user).order_by('-time_created')
+            tickets_and_reviews = sorted(
+                chain(tickets_and_reviews, tickets_follow, review_follow),
+                key=lambda instance: instance.time_created,
+                reverse=True
+            )
 
         return render(
             request,

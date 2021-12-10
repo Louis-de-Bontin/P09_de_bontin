@@ -1,12 +1,14 @@
 from django import forms
 from . import models
 
+
 class TicketForm(forms.ModelForm):
     """
     Tickets creation and modification form.
     Build with the ticket model.
     """
     edit_ticket = forms.BooleanField(widget=forms.HiddenInput, initial=True)
+
     class Meta:
         model = models.Ticket
         fields = [
@@ -23,6 +25,7 @@ class ReviewForm(forms.ModelForm):
     Build with the Review model.
     """
     edit_review = forms.BooleanField(widget=forms.HiddenInput, initial=True)
+
     class Meta:
         model = models.Review
         fields = [
