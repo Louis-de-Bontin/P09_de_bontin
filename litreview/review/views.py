@@ -1,5 +1,6 @@
 from django.conf import settings
-from django.shortcuts import render, redirect, get_object_or_404
+from django.shortcuts import (
+    render, redirect, get_object_or_404)
 from django.views.generic import View
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.core.paginator import Paginator
@@ -279,6 +280,8 @@ class FluxUser(LoginRequiredMixin, View):
 
         ####################################
 
+        user = get_object_or_404(User, id=user_id)
+
         if 'follow' in str(request):
             relation = UserFollow()
             relation.user = request.user
@@ -303,7 +306,6 @@ class FluxUser(LoginRequiredMixin, View):
 
         ###############################
 
-        user = User.objects.get(id=user_id)
         tickets = models.Ticket.objects.filter(
             user=user).order_by('-time_created')
         reviews = models.Review.objects.filter(
@@ -392,8 +394,9 @@ class FluxTicket(LoginRequiredMixin, View):
     This view displays one ticket and all the reviews related to it.
     """
     def get(self, request, ticket_id):
+        print('\n\n\nbonjour\n\n\n')
         ticket = models.Ticket.objects.filter(
-            id=ticket_id).order_by('-time_created')
+            id=ticket_id)
         reviews = models.Review.objects.filter(
             ticket=ticket[0]
         ).order_by('-time_created')
@@ -407,6 +410,7 @@ class FluxTicket(LoginRequiredMixin, View):
         )
 
     def post(self, request, ticket_id):
+        print('\n\n\nbonjour\n\n\n')
         pass
 
 

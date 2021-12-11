@@ -42,7 +42,7 @@ urlpatterns = [
         template_name='authentication/password_change_done.html'
         ), name='password_change_done'),
     path(
-        '<str:follow_unfollow>/<int:user_id>/',
+        'search-users<str:follow_unfollow>/<int:user_id>/',
         authentication.views.FollowUser.as_view(),
         name='follow-user'
     ),
@@ -78,16 +78,16 @@ urlpatterns = [
         'flux/user/<int:user_id>/',
         review.views.FluxUser.as_view(), name='flux-user'),
     path(
-        'flux/user/<int:user_id>/follow',
+        'flux/user/<int:user_id>/follow/',
         review.views.FluxUser.as_view(), name='flux-user-follow'),
     path(
-        'flux/user/<int:user_id>/unfollow',
+        'flux/user/<int:user_id>/unfollow/',
         review.views.FluxUser.as_view(), name='flux-user-unfollow'),
     path(
-        'flux/user/<str:author_name>/<str:book_title>/',
+        'flux/<str:author_name>/<str:book_title>/',
         review.views.FluxBook.as_view(), name='flux-book'),
     path(
-        'flux/ticket/<int:ticket_id>/',
+        'flux-ticket/<int:ticket_id>/',
         review.views.FluxTicket.as_view(), name='flux-ticket')
     ####
 ]

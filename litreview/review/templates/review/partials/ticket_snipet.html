@@ -9,7 +9,7 @@
             {% if not hide_button %}
                 <a href="{% url 'review-create' ticket.id %}" class="button_avis"><button>Je donne mon avis</button></a>
             {% endif %}
-            <a href="{% url 'flux-ticket' ticket.id %}" class="voir_avis">Voir tous les avis</a>
+                <a href="{% url 'flux-ticket' ticket.id %}" class="voir_avis">Voir tous les avis</a>
             {% if ticket.user == user %}
                 <a href="{% url 'ticket-modify' ticket.id %}" class="modify_link">Modifier ma demande</a>
             {% endif %}
