@@ -1,16 +1,15 @@
 {% extends 'base.html' %}
 {% block content %}
-    <p>Modifis ta demande ici !</p>
+    <h2>Modifis ta demande ici !</h2>
     <form method="post"  enctype='multipart/form-data' class="modify_form">
         {{ edit_form.as_p }}
         {% csrf_token %}
         <button type="submit">Sauvegarder les changements</button>
     </form>
     <hr>
-    <p>Suprimer ta demande ? </p>
     <form method="post">
         {{ delete_form.as_p }}
         {% csrf_token %}
-        <button type="submit">Supprimer ?</button>
+        <button type="submit">Supprimer</button>
     </form>
 {% endblock content %}

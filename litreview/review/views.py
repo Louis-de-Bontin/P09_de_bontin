@@ -36,7 +36,7 @@ class TicketCreate(LoginRequiredMixin, View):
             ticket = self.form.save(commit=False)
             ticket.user = request.user
             ticket.save()
-            return redirect(settings.LOGIN_REDIRECT_URL)
+            return redirect('flux-self')
         else:
             return render(
                 request,
@@ -73,12 +73,12 @@ class TicketModify(LoginRequiredMixin, View):
                 request.POST, request.FILES, instance=self.ticket)
             if edit_form.is_valid():
                 edit_form.save()
-                return redirect(settings.LOGIN_REDIRECT_URL)
+                return redirect('flux-self')
         if 'delete_ticket' in request.POST:
             delete_form = forms.DeleteTicketForm(request.POST)
             if delete_form.is_valid():
                 self.ticket.delete()
-                return redirect(settings.LOGIN_REDIRECT_URL)
+                return redirect('flux-self')
 
 
 class ReviewAndTicketCreate(LoginRequiredMixin, View):
@@ -115,7 +115,7 @@ class ReviewAndTicketCreate(LoginRequiredMixin, View):
             review.ticket = ticket
             review.user = request.user
             review.save()
-            return redirect(settings.LOGIN_REDIRECT_URL)
+            return redirect('flux-self')
         else:
             return render(
                 request,
@@ -157,7 +157,7 @@ class ReviewCreate(LoginRequiredMixin, View):
             review.ticket = models.Ticket.objects.get(id=ticket_id)
             review.user = request.user
             review.save()
-            return redirect(settings.LOGIN_REDIRECT_URL)
+            return redirect('flux-self')
         else:
             return render(
                 request,
@@ -183,7 +183,8 @@ class ReviewModify(LoginRequiredMixin, View):
             'review/review_modify.html',
             context={
                 'edit_form': edit_form,
-                'delete_form': delete_form
+                'delete_form': delete_form,
+                'ticket': self.review.ticket
             }
         )
 
@@ -193,12 +194,12 @@ class ReviewModify(LoginRequiredMixin, View):
             edit_form = forms.ReviewForm(request.POST, instance=self.review)
             if edit_form.is_valid():
                 edit_form.save()
-                return redirect(settings.LOGIN_REDIRECT_URL)
+                return redirect('flux-self')
         if 'delete_review' in request.POST:
             delete_form = forms.DeleteReviewForm(request.POST)
             if delete_form.is_valid():
                 self.review.delete()
-                return redirect(settings.LOGIN_REDIRECT_URL)
+                return redirect('flux-self')
 
 #######################################
 ##############   FLUX   ###############

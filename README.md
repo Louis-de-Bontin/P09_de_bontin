@@ -38,26 +38,51 @@
 - This page is accessible at "http://127.0.0.1:8000/flux/self/", or by clicking "Flux personnalisé" on the side bar. It displays only the post you wrote. You can also access it by clicking your pseudo in the side bar, or "moi" in any article you wrote.
 - You also have 2 buttons on the top of the page that allow you to either ask a review, or give one.   
 ###### User flux
-- This page is accessible at "http://127.0.0.1:8000/flux/user/_int_/", or by clicking "Flux personnalisé" on the side bar. You can also access it by clicking a pseudo on an article or the following management page. It displays only the post the user, assiociated with the id in the search bar wrote.
+- This page is accessible at "http://127.0.0.1:8000/flux/user/_userid(int)_/", or by clicking "Flux personnalisé" on the side bar. You can also access it by clicking a pseudo on an article or the following management page. It displays only the post the user, assiociated with the id in the search bar wrote.
 - It also displays the username, and profil picture of the visited profil. As user, you can follow or unfollow this profil.
 ###### Others
-(Ticket, book)
 - You can access a ticket flux by clicking on "Voir tous les avis" on any ticket. It display the ticket, and the reviews published to answer this ticket.
 - You can access a book flux by clicking the name of the name of the book. It look for every tickets that have the same title and author name, and query all the reviews assiciated, and displays everything ordered by date.
 
 #### Follow users features
 ###### From dedicated page
+- You can manage the users you follow on a page accessible at "http://127.0.0.1:8000/search-users/follow/0/" or by clicking "Chercher des utilisateurs in the side bar.
+- On this page you have 3 features. You can see all the users you follow, and you can access their profils by clicking on their usernames, or unfollow them by clicking on the "unfollow" button. in an other div, you can see all the users you don't follow, access their profils by clicking on their usernames, and follow them by clicking the "follow" button. You can also search for a character chain and see all the user who have this chain in their usernames.
 ###### From user profil
+- This is the same page than "User Flux". You can check the dedicated section for more infos.
 
 #### Profil management
 ###### Updating password
+- This page is accessible at "http://127.0.0.1:8000/password-change/", or by clicking "Modifier mon mot de passe" on the side bar. It displays the form dadicated to change the password. It asks for the former password and the new one.
+- Once done, the user is redirected on the public flux.
 ###### Updating profil picture
+- This page is accessible at "http://127.0.0.1:8000/profil-pic-change/", or by clicking "Changer ma photo de profil" on the side bar. It displays the form dadicated to change the profil picture.
+- Once done, the user is redirected on the public flux.
 
 #### Asking for reviews
 ###### Creating a ticket
+- You can access this page at "http://127.0.0.1:8000/ticket/create/" or by clicking on the "Demander un avis sur un livre" button. This button is displayed on every flux page, exept the "User flux".
+- Once you click on this, the user can enter some informations about the book. The title and the author are required. The description and image arn't.
+- Once done, the user is redirected on the "Self flux".
 ###### Modifying a ticket
+- You can access this page at "http://127.0.0.1:8000/ticket/modify/_ticketid(int)_/" or by clicking on the "Modifier ma demande" link available on any ticket the user posted.
+- It displays the form, with the actual informations, then the user can add/modify the data. 
+- The user can also delete his ticket by clicking the "Supprimer" button on the bottom of the page.
+- Once done, the user is redirected on the "Self flux" page.
 
 #### Posting reviews
 ###### Requested review
+- Any user can add a review to any ticket. He can do it by simply clicking on the "Je donne mon avis" button on a ticket. This page is also accessible via the link "http://127.0.0.1:8000/review/_ticketid(int)/create/".
+- Once on the page, the ticket is displayed, and there is the form to create a review below. The rating and headline are required, the body isn't. The rating will be display as stars on the review article once published.
+- Once the form filled, and the "Publier" button is pressed, the user is redirect on the "Self flux".
+
 ###### Not requested review
+- You can access this page at "http://127.0.0.1:8000/review/ticket/create/" or by clicking on the "Donner son avis sur un livre" button. This button is displayed on every flux page, exept the "User flux".
+- On this page, both the ticket create and review create forms are displayed. The user fill them with the same requirements than in the "Creating ticket" and "Requested review" sections.
+- Once done, the program will save the ticket first, the the assiciated review, then redirect the user on the "Self flux".
+
 ###### Modifying a review
+- You can access this page at "http://127.0.0.1:8000/review/modify/_reviewid(int)_/" or by clicking on the "Modifier mon avis" link available on any ticket the user posted.
+- The user can see the associated ticket, and modify the data of the review.
+- He can also delete his review by simply clicking the "Supprimer mon avis" button at the bottom of the page.
+- Once done, the user is redirected on the "Self flux" page.

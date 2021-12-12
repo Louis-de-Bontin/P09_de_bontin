@@ -42,7 +42,7 @@ urlpatterns = [
         template_name='authentication/password_change_done.html'
         ), name='password_change_done'),
     path(
-        'search-users<str:follow_unfollow>/<int:user_id>/',
+        'search-users/<str:follow_unfollow>/<int:user_id>/',
         authentication.views.FollowUser.as_view(),
         name='follow-user'
     ),

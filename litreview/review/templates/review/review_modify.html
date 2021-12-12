@@ -1,16 +1,16 @@
 {% extends 'base.html' %}
 {% block content %}
-<p>Modifier une review</p>
-<form method="post">
-    {{ edit_form.as_p }}
-    {% csrf_token %}
-    <button type="submit">Modifer mon avis</button>
-    <hr>
-</form>
-<form method="post">
-    <p>Supprimer une review</p>
-    {{ delete_form.as_p }}
-    {% csrf_token %}
-    <button type="submit">Supprimer mon avis</button>
+    <h2>Modifier une review</h2>
+    {%  include 'review/partials/ticket_snipet.html' with ticket=ticket %}
+    <form method="post">
+        {{ edit_form.as_p }}
+        {% csrf_token %}
+        <button type="submit">Modifer mon avis</button>
+        <hr>
+    </form>
+    <form method="post">
+        {{ delete_form.as_p }}
+        {% csrf_token %}
+        <button type="submit">Supprimer mon avis</button>
 </form>
 {% endblock content %}
