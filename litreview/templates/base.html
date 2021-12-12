@@ -3,12 +3,15 @@
     <head>
         <title>LitReview</title>
         <link rel="stylesheet" href="{% static 'style.css' %}">
+        <link rel="preconnect" href="https://fonts.googleapis.com">
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link href="https://fonts.googleapis.com/css2?family=Varela+Round&display=swap" rel="stylesheet">
     </head>
 
     <body>
         <header>
             <div id="top_left">
-                <a href="{% url 'flux' %}" id='header_title'><h1>LitReview</h1></a>
+                <a href="{% url 'flux' %}" id='header_title'><h1>LITReview</h1></a>
                 {% if user.is_authenticated %}
                 <div class="profile_infos">
                         <a href="{% url 'flux-self' %}">

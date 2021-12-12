@@ -11,7 +11,7 @@
                 <a href="{% url 'flux-user-follow' user_profile.id %}"><button>S'abonner</button></a>
             {% endif %}
         {% else %}
-            {% include 'review/review_ticket_button.html' %}
+            {% include 'review/partials/review_ticket_button.html' %}
         {% endif %}
     </div>
     {% for instance in tickets_and_reviews %}

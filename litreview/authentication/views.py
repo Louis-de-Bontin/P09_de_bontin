@@ -88,7 +88,6 @@ class FollowUser(LoginRequiredMixin, View):
     form = forms.SearchUser()
 
     def get(self, request, follow_unfollow, user_id):
-        print('\n\n\nbonjour\n\n\n')
         if user_id != 0:
             if follow_unfollow == 'follow':
                 relation = models.UserFollow()

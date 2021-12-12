@@ -22,10 +22,10 @@ def datetime_display(value):
     time = value.time_created
     delta = (now-time).total_seconds()
     if delta < 60:
-        return 'Posté il y a quelques secondes.'
+        return 'Il y a quelques secondes.'
     if delta < 3600:
-        return "Posté il y a " + str(int(delta/60)) + " minutes."
+        return "Il y a " + str(int(delta/60)) + " minutes."
     elif delta < 86400:
-        return "Posté il y a " + str(int(delta/3600)) + " heures."
+        return "Il y a " + str(int(delta/3600)) + " heures."
     else:
-        return "Posté à " + str(time.strftime("%H:%M le %m/%d/%Y")) + "."
+        return "A " + str(time.strftime("%H heure le %m/%d/%Y")) + "."

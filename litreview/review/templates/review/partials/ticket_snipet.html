@@ -1,10 +1,22 @@
 {% load review_extras %}
 <article>
     <div class="entete">
-        <div>
+        <div class="title_author">
             <a href="{% url 'flux-book' ticket.author ticket.title %}"><h3 class="title">{{ ticket.title }}</h3></a>
             <h4 class="author">-{{ ticket.author }}-</h4>
+            <p class="datetime"><i>{{ ticket|datetime_display }}</i></p>
+            <p class="datetime"><i>Demande</i></p>
         </div>
+        {% if ticket.user.username == user.username %}
+            <p>Un avis sur ce livre est demandé par :</p>
+            <img src="{{ ticket.user.profile_picture.url }}" class="img_article">
+            <a href="{% url 'flux-self' %}">{% get_poster_display ticket.user %}</a>
+        {% else %}
+            <div class="footer_article">
+                <img src="{{ ticket.user.profile_picture.url }}" class="img_article">
+                <a href="{% url 'flux-user' ticket.user.id %}">{% get_poster_display ticket.user %}</a>
+            </div>
+        {% endif %}
         <div class="top_right_in_content">
             {% if not hide_button %}
                 <a href="{% url 'review-create' ticket.id %}" class="button_avis"><button>Je donne mon avis</button></a>
@@ -21,12 +33,6 @@
         {% endif %}
         <div class="details">
             <h5>{{ ticket.description }}</h5>
-            <p>{{ ticket|datetime_display }}</p>
-            {% if ticket.user.username == user.username %}
-                <p>Un avis sur ce livre est demandé par <a href="{% url 'flux-self' %}">{% get_poster_display ticket.user %}</a>.</p>
-            {% else %}
-                <p>Un avis sur ce livre est demandé par <a href="{% url 'flux-user' ticket.user.id %}">{% get_poster_display ticket.user %}</a>.</p>
-            {% endif %}
         </div>
     </div>
 </article>

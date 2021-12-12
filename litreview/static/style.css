@@ -1,5 +1,5 @@
 header {
-    background: linear-gradient(to right, #27b092, #40fbdc);
+    background: rgba(36, 82, 76, 0.87);
     /* background: red; */
     color: #f1f1f1;
     height: 100%;
@@ -27,9 +27,9 @@ header {
 }
 
 .avatar {
+    border-radius: 50%;
     max-width: 200px;
     max-height: 200px;
-    border-radius: 10%;
     margin-left: 0px;
     width: auto;
     height: auto;
@@ -95,22 +95,25 @@ main {
 
 
 body {
-    background-color: #ebf6f6;
+    background-color: #f1faf9;
     font-family: 'Ubuntu', sans-serif;
 }
 
 #login_block {
     background-color: #FFFFFF;
     width: 400px;
-    height: 400px;
     margin-top: 50px;
-    border-radius: 1.5em;
     box-shadow: 0px 11px 35px 2px rgba(0, 0, 0, 0.14);
     display: flex;
     flex-direction: column;
 }
 
+.login label {
+    margin-left: 50px;
+}
+
 ul {
+    list-style-type: none;
     color: #558baa;
     font-family: 'Ubuntu', sans-serif;
     font-size: 15px;
@@ -125,7 +128,7 @@ ul {
 
 label, h6, h5, h4, h3, h2 {
     color: #558baa;
-    font-family: 'Ubuntu', sans-serif;
+    font-family: 'Varela Round', sans-serif;
     font-weight: bold;
     font-size: 23px;
 }
@@ -159,7 +162,7 @@ input, #id_description, #id_body {
     background: rgba(136, 126, 126, 0.04);
     padding: 10px 20px;
     border: none;
-    border-radius: 20px;
+    /* border-radius: 20px; */
     outline: none;
     box-sizing: border-box;
     border: 2px solid rgba(0, 0, 0, 0.02);
@@ -181,8 +184,8 @@ input:focus {
 
 button {
     cursor: pointer;
-    border-radius: 5em;
-    background: linear-gradient(to right, #27b092, #40fbdc);
+    /* border-radius: 5em; */
+    background: rgba(36, 82, 76, 0.87);
     color: #fff;
     border: 0;
     padding-left: 40px;
@@ -202,8 +205,6 @@ button:hover {
 
 .subscribe {
     text-shadow: 0px 0px 3px rgba(117, 117, 117, 0.12);
-    color: #566b6a;
-    /* padding-top: 15px; */
 }
 
 a {
@@ -211,6 +212,10 @@ a {
     color: #ebf6f6;
     text-decoration: none;
     padding: 5px;    
+}
+
+.title_author a {
+    padding: 0px;
 }
 
 a:hover, #header_title:hover {
@@ -252,8 +257,8 @@ article {
     background-color: #4a5e5944;
     width: 60%;
     padding: 10px;
-    margin-top: 50px;
-    border-radius: 1.5em;
+    margin: 50px;
+    /* border-radius: 1.5em; */
     box-shadow: 0px 11px 35px 2px rgba(0, 0, 0, 0.14);
     display: flex;
     flex-direction: column;
@@ -275,13 +280,15 @@ article {
 .content {
     display: flex;
     flex-direction: row;
-    align-items: center;
+    align-items: flex-start;
 }
 
 .details {
     display: flex;
     flex-direction: column;
     margin-left: 20px;
+    justify-content: space-around;
+    align-items: flex-start;
 }
 
 .entete {
@@ -289,6 +296,11 @@ article {
     flex-direction: row;
     justify-content: space-between;
     margin-bottom: 20px;
+}
+
+.title_author {
+    display: flex;
+    flex-direction: column;    
 }
 
 .top_right_in_content {
@@ -334,8 +346,11 @@ article {
 
 .book_cover {
     display: block;
-    max-width:300px;
-    max-height:500px;
+    max-width:250px;
+    min-width: 250px;
+    max-height:400px;
+    min-height: 400px;
+    box-shadow: 4px 11px 35px 2px rgba(0, 0, 0, 0.55);
     width: auto;
     height: auto;
     border-radius: 4%;
@@ -343,9 +358,55 @@ article {
 
 .rating {
     text-decoration:none;
+    display: flex;
+    flex-direction: row;
 }
 
 .star_box {
     margin-right: 15px;
     margin-left: auto;
+}
+
+.visitor_profile_pic {
+    height: 200px;
+    width: 200px;
+    border-radius: 50%;
+    box-shadow: 4px 11px 35px 2px rgba(0, 0, 0, 0.55);
+}
+
+button {
+    color: white;
+    font-family: 'Varela Round', sans-serif;
+}
+
+.img_article {
+    border-radius: 50%;
+    width: 50px;
+    height: 50px;
+}
+
+.footer_article, .footer_article p {
+    margin: 0px;
+    height: inherit;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    align-self: center;
+}
+
+.details h5, .details p {
+    margin-top: 5px;
+    margin-bottom: 5px;
+}
+
+.datetime {
+    font-family: 'Varela Round', sans-serif;
+    margin: 0px;
+    padding: 0px;
+    color: #566b6a;
+    font-size: small;
+}
+
+.review {
+    background-color: #d3dfdf;
 }

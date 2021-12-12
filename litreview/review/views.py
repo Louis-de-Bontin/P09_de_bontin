@@ -395,7 +395,6 @@ class FluxTicket(LoginRequiredMixin, View):
     This view displays one ticket and all the reviews related to it.
     """
     def get(self, request, ticket_id):
-        print('\n\n\nbonjour\n\n\n')
         ticket = models.Ticket.objects.filter(
             id=ticket_id)
         reviews = models.Review.objects.filter(
@@ -411,7 +410,6 @@ class FluxTicket(LoginRequiredMixin, View):
         )
 
     def post(self, request, ticket_id):
-        print('\n\n\nbonjour\n\n\n')
         pass
 
 

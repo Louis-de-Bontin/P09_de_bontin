@@ -19,7 +19,8 @@
 - The server is accessible from any browser like Chrome, Firefox, Brave...    
 - Enter "http://127.0.0.1:8000/" in the search bar    
 - You are now on the login page. Like any other website, you can either create a new profil or login if you already have one.    
-- (Here is a list of some profils that already exist : Likha, Muii, Louis, Java, Spoon, Flolasticot, Palme, Jacobr, CosmicChrist. The password is the same for every profils : Jambon12)  
+- (Here is a list of some profils that already exist : Likha, Muii, Louis, Java, Spoon, Flolasticot, Palme, Jacobr, CosmicChrist. The password is the same for every profils : Jambon12)
+- You can explore the database by logging in with a super user. Here are the two superusers that already exist : Chirac, LeZ. The password is also : Jambon12. You can access the superuser environment by typing "http://127.0.0.1:8000/admin/" in the search bar of your browser.
 - Once you are logged in, you are redirected on the pubic flux, and some options are available to you. Let's explore them.  
 
 

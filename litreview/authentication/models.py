@@ -1,7 +1,7 @@
 from django.db import models
 from django.contrib.auth.models import AbstractUser
 from django.conf import settings
-from PIL import Image
+from PIL import Image, ImageOps
 
 
 class User(AbstractUser):
@@ -21,12 +21,18 @@ class User(AbstractUser):
 
     def resize_image(self):
         profile_picture = Image.open(self.profile_picture)
-        profile_picture.thumbnail(self.IMAGE_MAX_SIZE)
+        
+        profile_picture = ImageOps.fit(profile_picture, self.IMAGE_MAX_SIZE, Image.ANTIALIAS)
+
+        # profile_picture.thumbnail(self.IMAGE_MAX_SIZE)
         profile_picture.save(self.profile_picture.path)
 
     def save(self, *args, **kwargs):
         super().save(*args, **kwargs)
-        self.resize_image()
+        try:
+            self.resize_image()
+        except:
+            pass
 
 
 class UserFollow(models.Model):
