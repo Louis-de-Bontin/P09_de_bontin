@@ -6,21 +6,24 @@
         {% csrf_token %}
         <button type="submit">Rechercher</button>
     </form>
-    <div>
-        <h3>Utilisateurs suivis :</h3>
-        {% for followed_user in followed_users %}
-        <a href="{% url 'flux-user' followed_user.id %}"><h6 class="follow_username">{{ followed_user.username }}</h6></a>
-        <a href="{% url 'follow-user' 'unfollow' followed_user.id %}"><button>Se désabonner</button></a>
-        <hr>
-    {% endfor %}
-    </div>
-    <hr>
-    <div>
-        <h3>Utilisateurs non suivis :</h3>
-        {% for not_followed_user in not_followed_users %}
-        <a href="{% url 'flux-user' not_followed_user.id %}"><h6 class="follow_username">{{ not_followed_user.username }}</h6></a>
-        <a href="{% url 'follow-user' 'follow' not_followed_user.id %}"><button>S'abonner</button></a>
-        <hr>
-    {% endfor %}
+    <div id="users_list_global">
+        <div class="users_list">
+            <h3>Utilisateurs suivis :</h3>
+            {% for followed_user in followed_users %}
+            <div class="user_follow">
+                <a href="{% url 'flux-user' followed_user.id %}"><h6 class="follow_username">{{ followed_user.username }}</h6></a>
+                <a href="{% url 'follow-user' 'unfollow' followed_user.id %}"><button>Se désabonner</button></a>
+            </div>
+        {% endfor %}
+        </div>
+        <div class="users_list">
+            <h3>Utilisateurs non suivis :</h3>
+            {% for not_followed_user in not_followed_users %}
+            <div class="user_follow">
+                <a href="{% url 'flux-user' not_followed_user.id %}"><h6 class="follow_username">{{ not_followed_user.username }}</h6></a>
+                <a href="{% url 'follow-user' 'follow' not_followed_user.id %}"><button>S'abonner</button></a>
+            </div>
+        {% endfor %}
+        </div>
     </div>
 {% endblock content %}

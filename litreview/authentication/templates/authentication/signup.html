@@ -6,5 +6,5 @@
         {% csrf_token %}
         <button type="submit">Créer mon profil et me connecter</button>
     </form>
-    <a href="{% url 'login' %}">J'ai déjà un profil en fait !</a>
+    <a class="already_signup" href="{% url 'login' %}">J'ai déjà un profil en fait !</a>
 {% endblock content %}
