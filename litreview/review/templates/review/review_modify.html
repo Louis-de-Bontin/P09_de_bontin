@@ -6,11 +6,22 @@
         {{ edit_form.as_p }}
         {% csrf_token %}
         <button type="submit">Modifer mon avis</button>
-        <hr>
     </form>
-    <form method="post">
-        {{ delete_form.as_p }}
-        {% csrf_token %}
-        <button type="submit">Supprimer mon avis</button>
-</form>
+    <hr>
+    <button onclick="document.getElementById('id01').style.display='block'">Supprimer mon avis</button>
+    
+    <div id="id01" class="modal">
+      <span onclick="document.getElementById('id01').style.display='none'" class="close" title="Close Modal">x</span>
+        <div class="container">
+          <h2>Voulez vous vraiment supprimer votre avis ?</h2>
+          <div class="clearfix">
+            <button type="button" onclick="document.getElementById('id01').style.display='none'" class="cancelbtn">Cancel</button>
+            <form method="post" id="delete_form">
+              {{ delete_form.as_p }}
+              {% csrf_token %}
+              <button type="submit" id="delete_button" value="Supprimer">Supprimer</button>
+            </form>
+          </div>
+        </div>
+      </div>
 {% endblock content %}

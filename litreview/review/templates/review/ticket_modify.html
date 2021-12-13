@@ -7,9 +7,21 @@
         <button type="submit">Sauvegarder les changements</button>
     </form>
     <hr>
-    <form method="post">
-        {{ delete_form.as_p }}
-        {% csrf_token %}
-        <button type="submit">Supprimer</button>
-    </form>
+    <button onclick="document.getElementById('id01').style.display='block'">Supprimer ma demande</button>
+
+    <div id="id01" class="modal">
+        <span onclick="document.getElementById('id01').style.display='none'" class="close" title="Close Modal">×</span>
+          <div class="container">
+            <h2>Voulez vous vraiment supprimer votre demande ?</h2>
+            <div class="clearfix">
+              <button type="button" onclick="document.getElementById('id01').style.display='none'" class="cancelbtn">Cancel</button>
+              <form method="post" id="delete_form">
+                {{ delete_form.as_p }}
+                {% csrf_token %}
+                
+                <button type="submit" id="delete_button">Supprimer</button>
+              </form>
+            </div>
+          </div>
+      </div>
 {% endblock content %}

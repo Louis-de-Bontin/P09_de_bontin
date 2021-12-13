@@ -8,7 +8,6 @@
             <p class="datetime"><i>Demande</i></p>
         </div>
         {% if ticket.user.username == user.username %}
-            <p>Un avis sur ce livre est demandé par :</p>
             <img src="{{ ticket.user.profile_picture.url }}" class="img_article">
             <a href="{% url 'flux-self' %}">{% get_poster_display ticket.user %}</a>
         {% else %}

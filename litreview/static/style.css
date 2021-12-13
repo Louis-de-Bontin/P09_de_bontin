@@ -1,6 +1,6 @@
 header {
     background: rgba(36, 82, 76, 0.87);
-    /* background: red; */
+    /* background: rgb(187, 255, 0); */
     color: #f1f1f1;
     height: 100%;
     width: 200px;
@@ -429,4 +429,55 @@ button {
 
 .user_follow {
     margin: 5px;
+}
+
+.modal {
+    display: none;
+    position: fixed;
+    z-index: 1;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    overflow: auto;
+    background-color: #1b81705b;
+    padding-top: 50px;
+    text-align: center;
+}
+
+.container {
+    background-color: #fefefe;
+    margin: auto;
+    border: 3px solid rgb(0, 110, 110);
+    box-shadow: #566b6a;
+    width: 30%;
+}
+
+.cancelbtn, .delete_button {
+    float: left;
+    width: 50%;
+}
+
+.cancelbtn {
+    background-color: #ccc;
+    color: black;
+}
+
+.delete_button {
+    background-color: #f44336;
+}
+
+.close {
+    position: absolute;
+    right: 35px;
+    top: 15px;
+    font-size: 40px;
+    font-weight: bold;
+    color: #f1f1f1;
+}
+
+.close:hover,
+.close:focus {
+  color: #f44336;
+  cursor: pointer;
 }
