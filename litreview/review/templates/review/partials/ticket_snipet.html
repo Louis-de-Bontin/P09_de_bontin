@@ -7,15 +7,15 @@
             <p class="datetime"><i>{{ ticket|datetime_display }}</i></p>
             <p class="datetime"><i>Demande</i></p>
         </div>
-        {% if ticket.user.username == user.username %}
-            <img src="{{ ticket.user.profile_picture.url }}" class="img_article">
-            <a href="{% url 'flux-self' %}">{% get_poster_display ticket.user %}</a>
-        {% else %}
-            <div class="footer_article">
+        <div class="footer_article">
+            {% if ticket.user.username == user.username %}
+                <img src="{{ ticket.user.profile_picture.url }}" class="img_article">
+                <a href="{% url 'flux-self' %}">{% get_poster_display ticket.user %}</a>
+            {% else %}
                 <img src="{{ ticket.user.profile_picture.url }}" class="img_article">
                 <a href="{% url 'flux-user' ticket.user.id %}">{% get_poster_display ticket.user %}</a>
-            </div>
-        {% endif %}
+            {% endif %}
+        </div>
         <div class="top_right_in_content">
             {% if not hide_button %}
                 <a href="{% url 'review-create' ticket.id %}" class="button_avis"><button>Je donne mon avis</button></a>
