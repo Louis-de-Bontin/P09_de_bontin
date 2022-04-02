@@ -1,5 +1,6 @@
 # P09_de_bontin
 9th project of my studies : building a responsive django web app
+The app is available [here](https://p09-litreview.herokuapp.com/flux/)
 
 ## Launching the server
 #### Download the repository content from github
